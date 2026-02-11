@@ -1,61 +1,96 @@
-import { motion } from "framer-motion";
-import { usePortfolio } from "@/data/portfolio-data";
-import PublicLayout from "@/components/layout/PublicLayout";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { db } from "@/lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { Loader2 } from "lucide-react";
 
-const categoryOrder = ["Frontend", "Backend", "Tools", "Other"] as const;
+interface Skill {
+  id: string;
+  name: string;
+  category: string;
+  level: number;
+}
 
-export default function Skills() {
-  const { skills } = usePortfolio();
+const Skills = () => {
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "skills"));
+        const data = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as Skill[];
+        setSkills(data);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
+  // Mengelompokkan skill berdasarkan kategori
+  const categories = ["Frontend", "Backend", "Tools", "Other"];
+  const groupedSkills = categories.reduce((acc, category) => {
+    acc[category] = skills.filter((skill) => skill.category === category);
+    return acc;
+  }, {} as Record<string, Skill[]>);
 
   return (
-    <PublicLayout>
-      <section className="section-padding">
-        <div className="container-custom">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl text-primary md:text-5xl font-bold mb-4">Skills</h1>
-            <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
-              Technologies and tools I work with on a daily basis.
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-grow container mx-auto px-4 py-24 space-y-12">
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight">Technical Skills</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              A comprehensive overview of my technical expertise and proficiency levels across various domains of software development.
             </p>
-          </motion.div>
-
-          <div className="space-y-16">
-            {categoryOrder.map((category) => {
-              const catSkills = skills.filter((s) => s.category === category);
-              if (catSkills.length === 0) return null;
-              return (
-                <motion.div
-                  key={category}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <h2 className="text-2xl text-primary font-bold mb-6">{category}</h2>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {catSkills.map((skill) => (
-                      <div key={skill.id} className="glass-card p-5">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="font-medium text-muted-foreground">{skill.name}</span>
-                          <span className="font-mono text-xs text-muted-foreground">{skill.level}%</span>
-                        </div>
-                        <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
-                          <motion.div
-                            className="h-full rounded-full bg-primary"
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.level}%` }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
           </div>
-        </div>
-      </section>
-    </PublicLayout>
+
+          {loading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+          ) : (
+              <div className="grid gap-8 md:grid-cols-2">
+                {categories.map((category) => {
+                  const categorySkills = groupedSkills[category];
+                  if (categorySkills.length === 0) return null;
+
+                  return (
+                      <Card key={category} className="glass-card border-none shadow-md">
+                        <CardHeader>
+                          <CardTitle className="text-2xl text-primary">{category}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                          {categorySkills.map((skill) => (
+                              <div key={skill.id} className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                  <span className="font-medium">{skill.name}</span>
+                                  <span className="text-muted-foreground">{skill.level}%</span>
+                                </div>
+                                <Progress value={skill.level} className="h-2" />
+                              </div>
+                          ))}
+                        </CardContent>
+                      </Card>
+                  );
+                })}
+              </div>
+          )}
+        </main>
+        <Footer />
+      </div>
   );
-}
+};
+
+export default Skills;

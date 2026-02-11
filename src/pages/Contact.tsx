@@ -1,106 +1,103 @@
+// FILE: src/pages/Contact.tsx
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, Github, Linkedin, Twitter, Mail } from "lucide-react";
-import { usePortfolio } from "@/data/portfolio-data";
-import PublicLayout from "@/components/layout/PublicLayout";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Mail, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
-export default function Contact() {
-  const { setMessages } = usePortfolio();
+const Contact = () => {
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [sending, setSending] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSending(true);
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { ...form, id: Date.now().toString(), createdAt: new Date().toISOString(), read: false },
-      ]);
-      toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
-      setForm({ name: "", email: "", subject: "", message: "" });
-      setSending(false);
-    }, 500);
+    setLoading(true);
+
+    try {
+      // Simpan ke Firebase Collection 'messages'
+      await addDoc(collection(db, "messages"), {
+        ...formData,
+        createdAt: new Date().toISOString(),
+        read: false
+      });
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to send",
+        description: "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const socials = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:hello@satriano.me", label: "hello@satriano.me" },
-  ];
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
-    <PublicLayout>
-      <section className="section-padding">
-        <div className="container-custom max-w-4xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl text-primary md:text-5xl font-bold mb-4">Get in Touch</h1>
-            <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
-              Have a project in mind or just want to say hello? Drop me a message!
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-5 gap-12">
-            <motion.form
-              onSubmit={handleSubmit}
-              className="md:col-span-3 space-y-5"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Name</label>
-                  <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required placeholder="Your name" />
+      <div className="min-h-screen bg-background flex flex-col">
+        <Navbar />
+        <main className="flex-grow container mx-auto px-4 py-24 flex items-center justify-center">
+          <Card className="w-full max-w-2xl glass-card border-none shadow-xl">
+            <CardHeader className="text-center space-y-2">
+              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                <Mail className="w-6 h-6 text-primary" />
+              </div>
+              <CardTitle className="text-3xl font-bold">Get in Touch</CardTitle>
+              <p className="text-muted-foreground">
+                Have a question or want to work together? Drop me a message!
+              </p>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Name</label>
+                    <Input name="name" placeholder="John Doe" value={formData.name} onChange={handleChange} required />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email</label>
+                    <Input name="email" type="email" placeholder="john@example.com" value={formData.email} onChange={handleChange} required />
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Email</label>
-                  <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required placeholder="your@email.com" />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Subject</label>
+                  <Input name="subject" placeholder="Project Inquiry" value={formData.subject} onChange={handleChange} required />
                 </div>
-              </div>
-              <div>
-                <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Subject</label>
-                <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required placeholder="What's this about?" />
-              </div>
-              <div>
-                <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Message</label>
-                <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required placeholder="Your message..." rows={5} />
-              </div>
-              <Button type="submit" size="lg" disabled={sending}>
-                <Send className="mr-2 h-4 w-4" /> {sending ? "Sending..." : "Send Message"}
-              </Button>
-            </motion.form>
-
-            <motion.div
-              className="md:col-span-2 space-y-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <h3 className="text-lg text-muted-foreground font-bold">Connect</h3>
-              <div className="space-y-4">
-                {socials.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <s.icon className="h-5 w-5" />
-                    <span className="text-sm">{s.label}</span>
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    </PublicLayout>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Message</label>
+                  <Textarea name="message" placeholder="Tell me about your project..." rows={6} className="resize-none" value={formData.message} onChange={handleChange} required />
+                </div>
+                <Button type="submit" className="w-full text-lg h-12" disabled={loading}>
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                  {loading ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
+      </div>
   );
-}
+};
+
+export default Contact;
