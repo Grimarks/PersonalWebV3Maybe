@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { PortfolioProvider } from "@/data/portfolio-data";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
@@ -18,11 +18,15 @@ import AdminSkills from "./pages/admin/AdminSkills";
 import AdminExperience from "./pages/admin/AdminExperience";
 import AdminMessages from "./pages/admin/AdminMessages";
 import NotFound from "./pages/NotFound";
+import { AuthProvider } from "@/contexts/AuthContext"; // Import Provider
+import { ProtectedRoute } from "@/components/ProtectedRoute"; // Import Protection
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <AuthProvider>
     <TooltipProvider>
       <PortfolioProvider>
         <Toaster />
@@ -36,7 +40,13 @@ const App = () => (
               <Route path="/skills" element={<Skills />} />
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/admin" element={<AdminLayout />}>
+              <Route path="/login" element={<Login />} />
+
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }>
                 <Route index element={<AdminDashboard />} />
                 <Route path="projects" element={<AdminProjects />} />
                 <Route path="categories" element={<AdminCategories />} />
@@ -44,12 +54,14 @@ const App = () => (
                 <Route path="experience" element={<AdminExperience />} />
                 <Route path="messages" element={<AdminMessages />} />
               </Route>
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </BrowserRouter>
       </PortfolioProvider>
     </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
