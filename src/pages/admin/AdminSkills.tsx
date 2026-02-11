@@ -37,7 +37,7 @@ export default function AdminSkills() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Skills</h1>
+        <h1 className="text-2xl text-primary font-bold">Skills</h1>
         <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> Add Skill</Button>
       </div>
       <div className="glass-card overflow-hidden">
@@ -46,9 +46,9 @@ export default function AdminSkills() {
           <TableBody>
             {skills.map((s) => (
               <TableRow key={s.id}>
-                <TableCell className="font-medium">{s.name}</TableCell>
-                <TableCell>{s.category}</TableCell>
-                <TableCell className="font-mono text-xs">{s.level}%</TableCell>
+                <TableCell className="font-medium text-muted-foreground">{s.name}</TableCell>
+                <TableCell className="text-muted-foreground">{s.category}</TableCell>
+                <TableCell className="font-mono text-muted-foreground text-xs">{s.level}%</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
@@ -62,21 +62,21 @@ export default function AdminSkills() {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? "Edit" : "New"} Skill</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-primary">{editing ? "Edit" : "New"} Skill</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div><label className="text-sm font-medium mb-1 block">Name</label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Name</label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Category</label>
+              <label className="text-sm text-muted-foreground font-medium mb-1 block">Category</label>
               <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value as Skill["category"] })} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                 <option value="Frontend">Frontend</option><option value="Backend">Backend</option><option value="Tools">Tools</option><option value="Other">Other</option>
               </select>
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Level: {form.level}%</label>
+              <label className="text-sm text-muted-foreground font-medium mb-1 block">Level: {form.level}%</label>
               <Slider value={[form.level]} onValueChange={([v]) => setForm({ ...form, level: v })} min={0} max={100} step={5} />
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="destructive" onClick={() => setOpen(false)}>Cancel</Button>
               <Button onClick={save}>Save</Button>
             </div>
           </div>

@@ -38,7 +38,7 @@ export default function AdminExperience() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Experience & Education</h1>
+        <h1 className="text-2xl text-primary font-bold">Experience & Education</h1>
         <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> Add Entry</Button>
       </div>
       <div className="glass-card overflow-hidden">
@@ -47,9 +47,9 @@ export default function AdminExperience() {
           <TableBody>
             {experiences.map((e) => (
               <TableRow key={e.id}>
-                <TableCell className="font-medium">{e.title}</TableCell>
-                <TableCell>{e.organization}</TableCell>
-                <TableCell className="capitalize">{e.type}</TableCell>
+                <TableCell className="font-medium text-muted-foreground">{e.title}</TableCell>
+                <TableCell className="text-muted-foreground">{e.organization}</TableCell>
+                <TableCell className="capitalize text-muted-foreground">{e.type}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(e)}><Pencil className="h-4 w-4" /></Button>
@@ -63,25 +63,25 @@ export default function AdminExperience() {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing ? "Edit" : "New"} Entry</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-primary">{editing ? "Edit" : "New"} Entry</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium mb-1 block">Type</label>
-              <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as "work" | "education" })} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+              <label className="text-sm text-muted-foreground font-medium mb-1 block">Type</label>
+              <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as "work" | "education" })} className="text-muted-foreground w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                 <option value="work">Work</option><option value="education">Education</option>
               </select>
             </div>
-            <div><label className="text-sm font-medium mb-1 block">Title</label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
-            <div><label className="text-sm font-medium mb-1 block">Organization</label><Input value={form.organization} onChange={(e) => setForm({ ...form, organization: e.target.value })} /></div>
-            <div><label className="text-sm font-medium mb-1 block">Location</label><Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Title</label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Organization</label><Input value={form.organization} onChange={(e) => setForm({ ...form, organization: e.target.value })} /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Location</label><Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-4">
-              <div><label className="text-sm font-medium mb-1 block">Start Date</label><Input type="month" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} /></div>
-              <div><label className="text-sm font-medium mb-1 block">End Date</label><Input type="month" value={form.endDate || ""} onChange={(e) => setForm({ ...form, endDate: e.target.value })} disabled={form.current} /></div>
+              <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Start Date</label><Input type="month" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} /></div>
+              <div><label className="text-sm text-muted-foreground font-medium mb-1 block">End Date</label><Input type="month" value={form.endDate || ""} onChange={(e) => setForm({ ...form, endDate: e.target.value })} disabled={form.current} /></div>
             </div>
-            <div className="flex items-center gap-2"><Switch checked={form.current} onCheckedChange={(v) => setForm({ ...form, current: v })} /><label className="text-sm">Currently here</label></div>
-            <div><label className="text-sm font-medium mb-1 block">Description</label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} /></div>
+            <div className="flex text-muted-foreground items-center gap-2"><Switch checked={form.current} onCheckedChange={(v) => setForm({ ...form, current: v })} /><label className="text-sm">Currently here</label></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Description</label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} /></div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="destructive" onClick={() => setOpen(false)}>Cancel</Button>
               <Button onClick={save}>Save</Button>
             </div>
           </div>

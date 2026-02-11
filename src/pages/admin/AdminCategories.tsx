@@ -35,7 +35,7 @@ export default function AdminCategories() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Categories</h1>
+        <h1 className="text-2xl text-primary font-bold">Categories</h1>
         <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> Add Category</Button>
       </div>
       <div className="glass-card overflow-hidden">
@@ -44,8 +44,8 @@ export default function AdminCategories() {
           <TableBody>
             {categories.map((c) => (
               <TableRow key={c.id}>
-                <TableCell className="font-medium">{c.name}</TableCell>
-                <TableCell className="font-mono text-xs">{c.slug}</TableCell>
+                <TableCell className="font-medium text-muted-foreground">{c.name}</TableCell>
+                <TableCell className="font-mono text-muted-foreground text-xs">{c.slug}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(c)}><Pencil className="h-4 w-4" /></Button>
@@ -59,12 +59,12 @@ export default function AdminCategories() {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? "Edit" : "New"} Category</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-primary">{editing ? "Edit" : "New"} Category</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <div><label className="text-sm font-medium mb-1 block">Name</label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
-            <div><label className="text-sm font-medium mb-1 block">Slug</label><Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="auto-generated from name" /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Name</label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
+            <div><label className="text-sm text-muted-foreground font-medium mb-1 block">Slug</label><Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="auto-generated from name" /></div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="destructive" onClick={() => setOpen(false)}>Cancel</Button>
               <Button onClick={save}>Save</Button>
             </div>
           </div>

@@ -20,7 +20,7 @@ export default function Navbar() {
       <div className="container-custom flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-mono text-lg font-bold text-primary">
           <Terminal className="h-5 w-5" />
-          <span>satriano.dev</span>
+          <span>satriano.me</span>
         </Link>
 
         {/* Desktop */}

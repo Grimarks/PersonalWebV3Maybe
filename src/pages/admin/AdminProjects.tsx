@@ -44,7 +44,7 @@ export default function AdminProjects() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Projects</h1>
+        <h1 className="text-2xl text-primary font-bold">Projects</h1>
         <Button onClick={openNew}><Plus className="mr-2 h-4 w-4" /> Add Project</Button>
       </div>
 
@@ -61,9 +61,9 @@ export default function AdminProjects() {
           <TableBody>
             {projects.map((p) => (
               <TableRow key={p.id}>
-                <TableCell className="font-medium">{p.title}</TableCell>
-                <TableCell className="font-mono text-xs">{p.category}</TableCell>
-                <TableCell>{p.featured ? "★" : "—"}</TableCell>
+                <TableCell className="font-medium text-muted-foreground">{p.title}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">{p.category}</TableCell>
+                <TableCell className="text-muted-foreground">{p.featured ? "★" : "—"}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
@@ -78,31 +78,31 @@ export default function AdminProjects() {
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing ? "Edit" : "New"} Project</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-primary">{editing ? "Edit" : "New"} Project</DialogTitle></DialogHeader>
           <div className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className="text-sm font-medium mb-1 block">Title</label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
+              <div><label className="text-sm text-primary font-medium mb-1 block">Title</label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
               <div>
-                <label className="text-sm font-medium mb-1 block">Category</label>
+                <label className="text-sm text-primary font-medium mb-1 block">Category</label>
                 <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                   {categories.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
                 </select>
               </div>
             </div>
-            <div><label className="text-sm font-medium mb-1 block">Short Description</label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} /></div>
-            <div><label className="text-sm font-medium mb-1 block">Full Description</label><Textarea value={form.longDescription} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} rows={4} /></div>
+            <div><label className="text-sm text-primary font-medium mb-1 block">Short Description</label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} /></div>
+            <div><label className="text-sm text-primary font-medium mb-1 block">Full Description</label><Textarea value={form.longDescription} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} rows={4} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className="text-sm font-medium mb-1 block">GitHub URL</label><Input value={form.githubUrl} onChange={(e) => setForm({ ...form, githubUrl: e.target.value })} /></div>
-              <div><label className="text-sm font-medium mb-1 block">Live URL</label><Input value={form.liveUrl || ""} onChange={(e) => setForm({ ...form, liveUrl: e.target.value })} /></div>
+              <div><label className="text-sm text-primary font-medium mb-1 block">GitHub URL</label><Input value={form.githubUrl} onChange={(e) => setForm({ ...form, githubUrl: e.target.value })} /></div>
+              <div><label className="text-sm text-primary font-medium mb-1 block">Live URL</label><Input value={form.liveUrl || ""} onChange={(e) => setForm({ ...form, liveUrl: e.target.value })} /></div>
             </div>
-            <div><label className="text-sm font-medium mb-1 block">Tech Stack (comma separated)</label><Input value={form.techStack.join(", ")} onChange={(e) => setForm({ ...form, techStack: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} /></div>
-            <div><label className="text-sm font-medium mb-1 block">Features (comma separated)</label><Input value={form.features.join(", ")} onChange={(e) => setForm({ ...form, features: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} /></div>
+            <div><label className="text-sm text-primary font-medium mb-1 block">Tech Stack (comma separated)</label><Input value={form.techStack.join(", ")} onChange={(e) => setForm({ ...form, techStack: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} /></div>
+            <div><label className="text-sm text-primary font-medium mb-1 block">Features (comma separated)</label><Input value={form.features.join(", ")} onChange={(e) => setForm({ ...form, features: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} /></div>
             <div className="flex items-center gap-2">
               <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
-              <label className="text-sm">Featured project</label>
+              <label className="text-sm text-primary">Featured project</label>
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button variant="destructive" onClick={() => setOpen(false)}>Cancel</Button>
               <Button onClick={save}>Save</Button>
             </div>
           </div>

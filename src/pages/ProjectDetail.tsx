@@ -28,18 +28,18 @@ export default function ProjectDetail() {
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Link to="/projects" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-8">
+            <Link to="/projects" className="inline-flex items-center text-lg text-muted-foreground hover:text-primary transition-colors mb-8">
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
             </Link>
 
             <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
               <div>
                 <span className="font-mono text-xs text-primary uppercase tracking-wider">{project.category}</span>
-                <h1 className="text-4xl md:text-5xl font-bold mt-2">{project.title}</h1>
+                <h1 className="text-4xl text-primary md:text-5xl font-bold mt-2">{project.title}</h1>
               </div>
               <div className="flex gap-3">
                 {project.githubUrl && (
-                  <Button asChild variant="outline" size="sm">
+                    <Button asChild size="sm">
                     <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                       <Github className="mr-2 h-4 w-4" /> Source
                     </a>
@@ -59,7 +59,7 @@ export default function ProjectDetail() {
 
             {/* Tech Stack */}
             <div className="mb-10">
-              <h2 className="text-xl font-bold mb-4">Tech Stack</h2>
+              <h2 className="text-xl text-primary font-bold mb-4">Tech Stack</h2>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
                   <span key={tech} className="font-mono text-sm px-3 py-1.5 rounded-full bg-secondary text-foreground">
@@ -72,7 +72,7 @@ export default function ProjectDetail() {
             {/* Features */}
             {project.features.length > 0 && (
               <div>
-                <h2 className="text-xl font-bold mb-4">Key Features</h2>
+                <h2 className="text-xl text-primary font-bold mb-4">Key Features</h2>
                 <ul className="grid sm:grid-cols-2 gap-3">
                   {project.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2 text-muted-foreground">

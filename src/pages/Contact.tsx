@@ -31,7 +31,6 @@ export default function Contact() {
   const socials = [
     { icon: Github, href: "https://github.com", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
     { icon: Mail, href: "mailto:hello@satriano.me", label: "hello@satriano.me" },
   ];
 
@@ -40,7 +39,7 @@ export default function Contact() {
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
+            <h1 className="text-4xl text-primary md:text-5xl font-bold mb-4">Get in Touch</h1>
             <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
               Have a project in mind or just want to say hello? Drop me a message!
             </p>
@@ -56,20 +55,20 @@ export default function Contact() {
             >
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Name</label>
+                  <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Name</label>
                   <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required placeholder="Your name" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Email</label>
+                  <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Email</label>
                   <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required placeholder="your@email.com" />
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">Subject</label>
+                <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Subject</label>
                 <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required placeholder="What's this about?" />
               </div>
               <div>
-                <label className="text-sm font-medium mb-1.5 block">Message</label>
+                <label className="text-sm text-muted-foreground font-medium mb-1.5 block">Message</label>
                 <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required placeholder="Your message..." rows={5} />
               </div>
               <Button type="submit" size="lg" disabled={sending}>
@@ -83,7 +82,7 @@ export default function Contact() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="text-lg font-bold">Connect</h3>
+              <h3 className="text-lg text-muted-foreground font-bold">Connect</h3>
               <div className="space-y-4">
                 {socials.map((s) => (
                   <a

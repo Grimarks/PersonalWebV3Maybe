@@ -19,7 +19,7 @@ export default function AdminMessages() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Messages</h1>
+      <h1 className="text-2xl text-primary font-bold mb-6">Messages</h1>
       {messages.length === 0 ? (
         <p className="text-muted-foreground">No messages yet.</p>
       ) : (
@@ -37,11 +37,11 @@ export default function AdminMessages() {
               {messages.map((m) => (
                 <TableRow key={m.id} className={m.read ? "opacity-60" : ""}>
                   <TableCell>
-                    <div className="font-medium">{m.name}</div>
+                    <div className="font-medium text-muted-foreground">{m.name}</div>
                     <div className="text-xs text-muted-foreground">{m.email}</div>
                   </TableCell>
                   <TableCell>{m.subject}</TableCell>
-                  <TableCell className="font-mono text-xs">{new Date(m.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell className="font-mono text-muted-foreground text-xs">{new Date(m.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
                       <Button variant="ghost" size="icon" onClick={() => toggleRead(m.id)}>

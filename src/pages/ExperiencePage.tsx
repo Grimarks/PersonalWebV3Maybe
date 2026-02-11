@@ -25,7 +25,7 @@ export default function ExperiencePage() {
       <div className="absolute left-0 top-0 -translate-x-1/2 h-3 w-3 rounded-full bg-primary" />
       <div className="glass-card p-6">
         <div className="flex items-start justify-between flex-wrap gap-2 mb-2">
-          <h3 className="text-lg font-bold">{exp.title}</h3>
+          <h3 className="text-lg text-primary font-bold">{exp.title}</h3>
           <span className="font-mono text-xs text-muted-foreground">
             {formatDate(exp.startDate)} — {exp.current ? "Present" : exp.endDate ? formatDate(exp.endDate) : ""}
           </span>
@@ -44,7 +44,7 @@ export default function ExperiencePage() {
       <section className="section-padding">
         <div className="container-custom max-w-3xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Experience & Education</h1>
+            <h1 className="text-4xl text-primary md:text-5xl font-bold mb-4">Experience & Education</h1>
             <p className="text-muted-foreground text-lg mb-12">My professional journey and academic background.</p>
           </motion.div>
 
@@ -52,7 +52,7 @@ export default function ExperiencePage() {
             <div className="mb-16">
               <div className="flex items-center gap-2 mb-8">
                 <Briefcase className="h-5 w-5 text-primary" />
-                <h2 className="text-2xl font-bold">Work Experience</h2>
+                <h2 className="text-2xl text-primary font-bold">Work Experience</h2>
               </div>
               {work.map((exp, i) => <TimelineItem key={exp.id} exp={exp} i={i} />)}
             </div>
@@ -62,7 +62,7 @@ export default function ExperiencePage() {
             <div>
               <div className="flex items-center gap-2 mb-8">
                 <GraduationCap className="h-5 w-5 text-primary" />
-                <h2 className="text-2xl font-bold">Education</h2>
+                <h2 className="text-2xl text-primary font-bold">Education</h2>
               </div>
               {education.map((exp, i) => <TimelineItem key={exp.id} exp={exp} i={i} />)}
             </div>

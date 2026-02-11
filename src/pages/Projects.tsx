@@ -16,7 +16,7 @@ export default function Projects() {
       <section className="section-padding">
         <div className="container-custom">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Projects</h1>
+            <h1 className="text-4xl md:text-5xl text-primary font-bold mb-4">Projects</h1>
             <p className="text-muted-foreground text-lg mb-10 max-w-2xl">
               A collection of projects I've built — from full-stack apps to developer tools.
             </p>
@@ -77,7 +77,7 @@ export default function Projects() {
                       )}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                  <h3 className="text-xl text-muted-foreground font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
                   <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.techStack.map((tech) => (

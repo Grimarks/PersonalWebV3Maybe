@@ -6,13 +6,12 @@ export default function Footer() {
       <div className="container-custom py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="font-mono text-sm text-muted-foreground">
-            © {new Date().getFullYear()} satriano.dev — Built with passion
+            © {new Date().getFullYear()} satriano.me — Built with passion(and coffee)
           </div>
           <div className="flex items-center gap-4">
             {[
               { icon: Github, href: "https://github.com", label: "GitHub" },
               { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-              { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
               { icon: Mail, href: "mailto:hello@satriano.me", label: "Email" },
             ].map((social) => (
               <a

@@ -21,9 +21,9 @@ export default function Index() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <p className="font-mono text-primary text-sm mb-4">Hi, my name is</p>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
-              Satriano<span className="gradient-text">.</span>
+            <p className="font-mono text-primary text-lg mb-4">Hi, my name is</p>
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight text-green-300">
+              Darrell Satriano<span className="gradient-text">.</span>
             </h1>
             <h2 className="text-3xl md:text-5xl font-bold text-muted-foreground mb-6">
               I build things for the web.
@@ -39,7 +39,7 @@ export default function Index() {
                   View Projects <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild size="lg">
                 <Link to="/contact">Get in Touch</Link>
               </Button>
             </div>
@@ -48,7 +48,7 @@ export default function Index() {
       </section>
 
       {/* Featured Projects */}
-      <section className="section-padding bg-secondary/30">
+      <section className="section-padding bg-secondary/35">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0 }}
@@ -56,8 +56,8 @@ export default function Index() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold mb-2">Featured Projects</h2>
-            <p className="text-muted-foreground mb-12">Some things I've built recently</p>
+            <h2 className="text-3xl font-bold mb-2 text-green-300">Featured Projects</h2>
+            <p className="text-muted-foreground mb-12 text-lg">Some things I've built recently</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -86,7 +86,7 @@ export default function Index() {
                       )}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="text-xl text-muted-foreground font-bold mb-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
@@ -105,7 +105,7 @@ export default function Index() {
           </div>
 
           <div className="text-center mt-12">
-            <Button asChild variant="outline">
+            <Button asChild size="lg">
               <Link to="/projects">
                 View All Projects <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
@@ -123,7 +123,7 @@ export default function Index() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's Work Together</h2>
+            <h2 className="text-3xl md:text-4xl text-primary font-bold mb-4">Let's Work Together</h2>
             <p className="text-muted-foreground max-w-lg mx-auto mb-8">
               I'm currently open to new opportunities and interesting projects.
               Feel free to reach out!

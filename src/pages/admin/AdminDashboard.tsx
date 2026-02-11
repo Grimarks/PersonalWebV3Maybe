@@ -14,7 +14,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <h1 className="text-2xl text-primary font-bold mb-6">Dashboard</h1>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s) => (
           <div key={s.label} className="glass-card p-6">
@@ -22,7 +22,7 @@ export default function AdminDashboard() {
               <span className="text-sm text-muted-foreground">{s.label}</span>
               <s.icon className="h-4 w-4 text-primary" />
             </div>
-            <p className="text-3xl font-bold">{s.value}</p>
+            <p className="text-3xl text-muted-foreground font-bold">{s.value}</p>
             {s.sub && <p className="text-xs text-primary mt-1">{s.sub}</p>}
           </div>
         ))}

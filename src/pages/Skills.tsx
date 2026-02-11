@@ -12,7 +12,7 @@ export default function Skills() {
       <section className="section-padding">
         <div className="container-custom">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Skills</h1>
+            <h1 className="text-4xl text-primary md:text-5xl font-bold mb-4">Skills</h1>
             <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
               Technologies and tools I work with on a daily basis.
             </p>
@@ -30,12 +30,12 @@ export default function Skills() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4 }}
                 >
-                  <h2 className="text-2xl font-bold mb-6">{category}</h2>
+                  <h2 className="text-2xl text-primary font-bold mb-6">{category}</h2>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {catSkills.map((skill) => (
                       <div key={skill.id} className="glass-card p-5">
                         <div className="flex items-center justify-between mb-3">
-                          <span className="font-medium">{skill.name}</span>
+                          <span className="font-medium text-muted-foreground">{skill.name}</span>
                           <span className="font-mono text-xs text-muted-foreground">{skill.level}%</span>
                         </div>
                         <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
