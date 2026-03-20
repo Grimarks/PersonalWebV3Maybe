@@ -50,7 +50,6 @@ export default function Index() {
 
   return (
       <PublicLayout>
-        {/* Hero - (TIDAK DIUBAH SAMA SEKALI) */}
         <section className="section-padding relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(160_84%_39%/0.08),transparent_60%)]" />
           <div className="container-custom relative">
@@ -65,12 +64,13 @@ export default function Index() {
                 Darrell Satriano<span className="gradient-text">.</span>
               </h1>
               <h2 className="text-3xl md:text-5xl font-bold text-muted-foreground mb-6">
-                I build things for the web.
+                I turn ideas into things you can actually use.
               </h2>
+
               <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
-                Full-stack software developer specializing in building exceptional digital
-                experiences. Currently focused on building scalable, accessible, and
-                performant web applications.
+                Full-stack developer passionate about building scalable web apps
+                with thoughtful design and solid engineering behind the scenes.
+                Powered by curiosity (and an unhealthy amount of coffee).
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button asChild size="lg">
