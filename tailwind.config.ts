@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
       },
       colors: {
@@ -88,6 +89,10 @@ export default {
           "0%": { transform: "scale(0.95)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -95,6 +100,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "fade-in-left": "fade-in-left 0.5s ease-out forwards",
         "scale-in": "scale-in 0.3s ease-out forwards",
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },

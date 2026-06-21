@@ -1,32 +1,70 @@
-import { usePortfolio } from "@/data/portfolio-data";
-import { FolderKanban, Lightbulb, Briefcase, MessageSquare } from "lucide-react";
+import { useEffect, useState } from "react";
+import { db } from "@/lib/firebase";
+import { collection, getCountFromServer } from "firebase/firestore";
+import { FolderKanban, Lightbulb, Briefcase, MessageSquare, PenLine, Coffee, Loader2 } from "lucide-react";
+
+interface StatItem {
+  label: string;
+  value: number;
+  icon: typeof FolderKanban;
+  sub?: string;
+}
 
 export default function AdminDashboard() {
-  const { projects, skills, experiences, messages } = usePortfolio();
-  const unread = messages.filter((m) => !m.read).length;
+  const [stats, setStats] = useState<StatItem[] | null>(null);
 
-  const stats = [
-    { label: "Projects", value: projects.length, icon: FolderKanban },
-    { label: "Skills", value: skills.length, icon: Lightbulb },
-    { label: "Experience", value: experiences.length, icon: Briefcase },
-    { label: "Messages", value: messages.length, icon: MessageSquare, sub: unread > 0 ? `${unread} unread` : undefined },
-  ];
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const [projects, skills, experiences, writings, hobbyMoments, messages] = await Promise.all([
+          getCountFromServer(collection(db, "projects")),
+          getCountFromServer(collection(db, "skills")),
+          getCountFromServer(collection(db, "experiences")),
+          getCountFromServer(collection(db, "writings")),
+          getCountFromServer(collection(db, "hobbyMoments")),
+          getCountFromServer(collection(db, "messages")),
+        ]);
+
+        setStats([
+          { label: "Projects", value: projects.data().count, icon: FolderKanban },
+          { label: "Skills", value: skills.data().count, icon: Lightbulb },
+          { label: "Experience", value: experiences.data().count, icon: Briefcase },
+          { label: "Tulisan", value: writings.data().count, icon: PenLine },
+          { label: "Momen Hobi", value: hobbyMoments.data().count, icon: Coffee },
+          { label: "Pesan Masuk", value: messages.data().count, icon: MessageSquare },
+        ]);
+      } catch (error) {
+        console.error("Error fetching dashboard counts:", error);
+        setStats([]);
+      }
+    };
+
+    fetchCounts();
+  }, []);
 
   return (
     <div>
-      <h1 className="text-2xl text-primary font-bold mb-6">Dashboard</h1>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((s) => (
-          <div key={s.label} className="glass-card p-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">{s.label}</span>
-              <s.icon className="h-4 w-4 text-primary" />
+      <h1 className="text-2xl font-bold mb-1 text-foreground">Dashboard</h1>
+      <p className="text-muted-foreground text-sm mb-6">Ringkasan data situs kamu, langsung dari Firestore.</p>
+
+      {stats === null ? (
+        <div className="flex justify-center py-16">
+          <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {stats.map((s) => (
+            <div key={s.label} className="soft-card p-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-muted-foreground">{s.label}</span>
+                <s.icon className="h-4 w-4 text-primary" />
+              </div>
+              <p className="text-3xl font-bold text-foreground">{s.value}</p>
+              {s.sub && <p className="text-xs text-primary mt-1">{s.sub}</p>}
             </div>
-            <p className="text-3xl text-muted-foreground font-bold">{s.value}</p>
-            {s.sub && <p className="text-xs text-primary mt-1">{s.sub}</p>}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
