@@ -88,13 +88,13 @@ export default function Index() {
               Darrell Satriano<span className="text-accent">.</span>
             </h1>
             <h2 className="text-2xl md:text-4xl font-bold text-muted-foreground mb-6 text-balance">
-              Mahasiswa Informatika yang suka mengubah ide jadi sesuatu yang bisa benar-benar dipakai.
+              Developer-researcher yang menjembatani riset AI/NLP dengan produk software yang benar-benar dipakai orang.
             </h2>
 
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
-              Fokus di pengembangan software, riset NLP, dan eksplorasi machine learning —
-              ditemani secangkir kopi dan rasa penasaran yang tidak pernah habis. Di luar layar,
-              saya juga senang menulis dan mengoleksi cerita kecil tentang hal-hal yang saya nikmati.
+              Mahasiswa Teknik Informatika Universitas Sriwijaya, Palembang. Student researcher NLP
+              untuk Bahasa Indonesia, sekaligus membangun aplikasi web & mobile dari desain UI sampai
+              deploy — ditemani secangkir kopi dan rasa penasaran yang tidak pernah habis.
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
               <Button asChild size="lg">

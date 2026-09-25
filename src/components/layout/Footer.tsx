@@ -15,9 +15,7 @@ export default function Footer() {
       <div className="container-custom py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-muted-foreground">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
-              D
-            </span>
+            <img src="/logo.svg" alt="" aria-hidden="true" className="h-6 w-6" />
             <span>© {new Date().getFullYear()} Darrell Satriano. Dibuat dengan niat baik dan banyak kopi.</span>
           </div>
           <div className="flex items-center gap-2">

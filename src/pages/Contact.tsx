@@ -3,7 +3,7 @@ import PublicLayout from "@/components/layout/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, Loader2 } from "lucide-react";
+import { Mail, MapPin, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -63,6 +63,9 @@ export default function Contact() {
             <h1 className="text-3xl font-bold text-foreground">Hubungi Saya</h1>
             <p className="text-muted-foreground">
               Punya pertanyaan atau ide kolaborasi? Kirim pesan saja!
+            </p>
+            <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <MapPin className="h-3.5 w-3.5" /> Palembang, Indonesia · Bahasa Indonesia & English
             </p>
           </div>
 

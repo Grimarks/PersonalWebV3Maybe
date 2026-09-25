@@ -53,9 +53,7 @@ export default function Navbar() {
     >
       <div className="container-custom flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold text-foreground">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm">
-            D
-          </span>
+          <img src="/logo.svg" alt="" aria-hidden="true" className="h-8 w-8" />
           <span>
             Darrell<span className="text-primary">.</span>
           </span>
