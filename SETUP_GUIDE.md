@@ -11,7 +11,7 @@ projects, writing, hobby — semuanya akan gagal load walau kode sudah benar.
 
 ```bash
 npm install
-cp .env .env   # lalu isi VITE_GOOGLE_CLIENT_ID (lihat bagian 4)
+# buat file .env di root project, lalu isi VITE_GOOGLE_CLIENT_ID (lihat bagian 3)
 npm run dev
 ```
 
@@ -104,62 +104,92 @@ Kalau foto tidak muncul (ada ikon "image off"), kemungkinan besar izin share-nya
 
 ## 6. Firestore Security Rules (WAJIB dipasang)
 
-Buka **Firebase Console → Firestore Database → Rules**, ganti isinya dengan ini, lalu klik **Publish**:
+Buka **Firebase Console → Firestore Database → Rules**, ganti isinya dengan ini, **ganti `EMAIL_ADMIN_KAMU`
+dengan email akun admin kamu**, lalu klik **Publish**:
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Koleksi konten: publik bisa baca, hanya user yang login (admin) yang bisa tulis
+    // Hanya akun admin yang boleh menulis. Jangan pakai `request.auth != null` saja:
+    // siapa pun bisa membuat akun Firebase lewat API key publik lalu ikut menulis data.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "EMAIL_ADMIN_KAMU"
+        && request.auth.token.email_verified == true;
+    }
+
+    // Koleksi konten: publik bisa baca, hanya admin yang bisa tulis
     match /projects/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /categories/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /skills/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /experiences/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /writings/{docId} {
-      // Hanya tampilkan yang published ke publik; admin (auth) bisa baca semua termasuk draft
-      allow read: if resource.data.published == true || request.auth != null;
-      allow write: if request.auth != null;
+      // Publik hanya boleh membaca tulisan published. Halaman publik sudah
+      // memakai query `where("published", "==", true)` supaya lolos rule ini.
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
     }
     match /hobbyMoments/{docId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
 
-    // Pesan kontak: publik boleh KIRIM (create) saja, tidak boleh baca/edit/hapus.
-    // Hanya admin yang bisa baca & hapus dari Admin Panel.
+    // Pesan kontak: publik hanya boleh KIRIM (create) dengan format yang valid.
+    // Batas panjang sama dengan form di src/pages/Contact.tsx.
     match /messages/{docId} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'subject', 'message', 'createdAt', 'read'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() <= 200
+        && request.resource.data.subject is string && request.resource.data.subject.size() > 0 && request.resource.data.subject.size() <= 150
+        && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 5000
+        && request.resource.data.read == false;
+      allow read, update, delete: if isAdmin();
     }
   }
 }
 ```
 
+> Kalau email admin kamu belum terverifikasi di Firebase Auth, hapus baris `email_verified` atau verifikasi dulu emailnya.
+
 Setelah klik Publish, refresh halaman admin panel — error "Missing or insufficient permissions" akan hilang
-(asalkan kamu juga sudah login di `/login`).
+(asalkan kamu juga sudah login di `/login` dengan akun admin).
+
+**Tulisan lama tanpa field `published`:** rule di atas menyembunyikan tulisan yang tidak punya field
+`published`. Buka tulisan itu di `/admin/writing`, lalu klik **Update Tulisan** sekali — field-nya akan
+otomatis tersimpan.
 
 ## 7. Login Admin
 
-Login admin pakai Firebase Authentication (Email/Password) di `/login`. Pastikan kamu sudah membuat user admin di Firebase Console → Authentication → Users. Setelah login, akses panel di `/admin`.
+Login admin pakai Firebase Authentication (Email/Password) di `/login`. Pastikan kamu sudah membuat user admin di Firebase Console → Authentication → Users. Setelah login, akses panel di `/admin` (ada tombol **Logout** di bagian bawah sidebar).
+
+Langkah keamanan tambahan (disarankan):
+- **Matikan pendaftaran akun publik**: Firebase Console → Authentication → Settings → User actions → hilangkan centang **Enable create (sign-up)**.
+- Isi `VITE_ADMIN_EMAILS` di `.env` (dan di env Vercel) dengan email admin, pisahkan koma kalau lebih dari satu:
+  ```
+  VITE_ADMIN_EMAILS=email-admin-kamu@gmail.com
+  ```
+  Akun lain yang mencoba login akan otomatis ditolak dari panel admin. Ini hanya lapisan tambahan di UI — perlindungan sebenarnya tetap Firestore Rules di bagian 6.
 
 ## 8. Catatan Teknis
 
-- TypeScript check (`npx tsc --noEmit`) dan production build (`npm run build`) sudah dicoba dan **lolos tanpa error**.
-- Dependency `next-themes` di `package.json` sebenarnya sudah tidak terpakai (theme toggle dibangun custom di `src/contexts/ThemeContext.tsx`), aman dihapus kalau mau lebih ringkas, tapi tidak mengganggu apa pun jika dibiarkan.
-- Bundle JS sekitar 1.1MB (300KB gzip) — wajar untuk app dengan shadcn/ui lengkap + Firebase + framer-motion. Bisa dioptimasi lebih lanjut dengan code-splitting kalau suatu saat terasa lambat, tapi untuk portfolio personal ini sudah lebih dari cukup.
-- Upload Google Drive pakai Google Identity Services (dimuat lewat script tag di `index.html`, bukan npm package tambahan) + Drive API REST langsung dari browser. Scope yang dipakai: `drive.file` — paling sempit, app hanya bisa akses file yang dia upload sendiri, tidak bisa baca file lain di Drive kamu.
+- TypeScript check (`npx tsc --noEmit -p tsconfig.app.json`), lint (`npm run lint`), dan production build (`npm run build`) lolos tanpa error.
+- Link sosial media di footer diatur di `src/data/profile.ts`. Link yang dikosongkan otomatis disembunyikan.
+- Dependency `next-themes` sudah tidak dipakai lagi oleh kode (toast Sonner sekarang ikut `src/contexts/ThemeContext.tsx`), jadi aman dihapus dari `package.json` kalau mau lebih ringkas.
+- Halaman admin & login di-lazy-load (code-splitting), jadi pengunjung publik tidak ikut mengunduh kode admin.
+- Upload Google Drive pakai Google Identity Services (dimuat otomatis hanya saat membuka admin panel, bukan npm package tambahan) + Drive API REST langsung dari browser. Scope yang dipakai: `drive.file` — paling sempit, app hanya bisa akses file yang dia upload sendiri, tidak bisa baca file lain di Drive kamu.
 - Token OAuth disimpan di `localStorage` browser (key: `darrell-site-gdrive-token`), bukan di server manapun. Aman untuk dipakai sendiri sebagai admin tunggal.
 

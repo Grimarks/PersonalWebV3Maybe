@@ -7,8 +7,13 @@ import { Mail, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { useDocumentTitle } from "@/hooks/use-document-title";
+
+// Batas panjang field — harus sama dengan validasi di Firestore Rules (SETUP_GUIDE.md bagian 6).
+const LIMITS = { name: 100, email: 200, subject: 150, message: 5000 };
 
 export default function Contact() {
+  useDocumentTitle("Contact");
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -19,7 +24,10 @@ export default function Contact() {
 
     try {
       await addDoc(collection(db, "messages"), {
-        ...formData,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
         createdAt: new Date().toISOString(),
         read: false,
       });
@@ -46,8 +54,8 @@ export default function Contact() {
 
   return (
     <PublicLayout>
-      <div className="container-custom py-10 flex items-center justify-center">
-        <div className="w-full max-w-2xl soft-card p-8 md:p-10">
+      <div className="container-custom pt-10 pb-16 md:pt-14 flex items-center justify-center">
+        <div className="w-full max-w-2xl soft-card p-6 sm:p-8 md:p-10">
           <div className="text-center space-y-2 mb-8">
             <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
               <Mail className="w-6 h-6 text-primary" />
@@ -61,13 +69,25 @@ export default function Contact() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Nama</label>
-                <Input name="name" placeholder="Nama kamu" value={formData.name} onChange={handleChange} required />
+                <label htmlFor="contact-name" className="text-sm font-medium text-foreground">Nama</label>
+                <Input
+                  id="contact-name"
+                  name="name"
+                  placeholder="Nama kamu"
+                  autoComplete="name"
+                  maxLength={LIMITS.name}
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Email</label>
+                <label htmlFor="contact-email" className="text-sm font-medium text-foreground">Email</label>
                 <Input
+                  id="contact-email"
                   name="email"
+                  autoComplete="email"
+                  maxLength={LIMITS.email}
                   type="email"
                   placeholder="email@contoh.com"
                   value={formData.email}
@@ -77,9 +97,11 @@ export default function Contact() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Subjek</label>
+              <label htmlFor="contact-subject" className="text-sm font-medium text-foreground">Subjek</label>
               <Input
+                id="contact-subject"
                 name="subject"
+                maxLength={LIMITS.subject}
                 placeholder="Soal apa nih?"
                 value={formData.subject}
                 onChange={handleChange}
@@ -87,9 +109,16 @@ export default function Contact() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Pesan</label>
+              <div className="flex items-baseline justify-between">
+                <label htmlFor="contact-message" className="text-sm font-medium text-foreground">Pesan</label>
+                <span className="text-xs text-muted-foreground">
+                  {formData.message.length}/{LIMITS.message}
+                </span>
+              </div>
               <Textarea
+                id="contact-message"
                 name="message"
+                maxLength={LIMITS.message}
                 placeholder="Ceritakan lebih lanjut..."
                 rows={6}
                 className="resize-none"

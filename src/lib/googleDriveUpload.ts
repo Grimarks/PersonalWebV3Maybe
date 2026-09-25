@@ -27,17 +27,12 @@
  */
 
 import { extractDriveFolderId } from "./gdrive";
-
-declare global {
-  interface Window {
-    google?: any;
-  }
-}
+import type { GisTokenClient, GisTokenResponse } from "@/types/gis";
 
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
-let tokenClient: any = null;
+let tokenClient: GisTokenClient | null = null;
 let accessToken: string | null = null;
 let accessTokenExpiry = 0;
 
@@ -95,14 +90,14 @@ export async function connectGoogleDrive(): Promise<void> {
       });
     }
 
-    tokenClient.callback = (response: any) => {
+    tokenClient.callback = (response: GisTokenResponse) => {
       if (response.error) {
         reject(new Error(response.error_description || "Gagal menghubungkan ke Google Drive."));
         return;
       }
-      accessToken = response.access_token;
+      accessToken = response.access_token ?? null;
       // expires_in dalam detik, kasih buffer 60 detik
-      accessTokenExpiry = Date.now() + (response.expires_in - 60) * 1000;
+      accessTokenExpiry = Date.now() + ((response.expires_in ?? 3600) - 60) * 1000;
       resolve();
     };
 

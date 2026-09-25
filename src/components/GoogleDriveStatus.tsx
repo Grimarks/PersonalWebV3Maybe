@@ -1,9 +1,18 @@
-import { CloudCog, Cloud, Loader2 } from "lucide-react";
+import { CloudCog, Cloud, CloudOff, Loader2 } from "lucide-react";
 import { useGoogleDriveAuth } from "@/contexts/GoogleDriveAuthContext";
 import { Button } from "@/components/ui/button";
 
 export function GoogleDriveStatus() {
-  const { isConnected, isReady, connecting, connect, disconnect } = useGoogleDriveAuth();
+  const { isConnected, isReady, loadFailed, connecting, connect, disconnect } = useGoogleDriveAuth();
+
+  if (loadFailed) {
+    return (
+      <div className="flex items-start gap-2 px-3 py-2 text-xs text-muted-foreground">
+        <CloudOff className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+        <span>Google Drive gagal dimuat (mungkin diblokir adblocker). Paste link manual tetap bisa dipakai.</span>
+      </div>
+    );
+  }
 
   if (!isReady) {
     return (
@@ -28,7 +37,7 @@ export function GoogleDriveStatus() {
 
   return (
     <Button variant="outline" size="sm" className="w-full justify-start" onClick={connect} disabled={connecting}>
-      <Cloud className="mr-2 h-3.5 w-3.5" />
+      {connecting ? <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" /> : <Cloud className="mr-2 h-3.5 w-3.5" />}
       {connecting ? "Menghubungkan..." : "Hubungkan Google Drive"}
     </Button>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Github, ExternalLink, Loader2, Calendar, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PublicLayout from "@/components/layout/PublicLayout";
@@ -10,16 +10,24 @@ import { doc, getDoc } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
 import type { Project } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/hooks/use-categories";
+import { useDocumentTitle } from "@/hooks/use-document-title";
+import { formatLongDate } from "@/lib/date";
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState<string>("");
+  const { getCategoryName } = useCategories();
+  useDocumentTitle(project?.title || (loading ? undefined : "Project tidak ditemukan"));
 
   useEffect(() => {
     const fetchProject = async () => {
-      if (!id) return;
+      if (!id) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const docRef = doc(db, "projects", id);
@@ -75,7 +83,7 @@ export default function ProjectDetail() {
 
   return (
     <PublicLayout>
-      <section className="pb-16">
+      <section className="pt-10 pb-16 md:pt-14">
         <div className="container-custom max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Link
@@ -89,18 +97,18 @@ export default function ProjectDetail() {
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
               <div className="space-y-3">
                 <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-wider">
-                  {project.category}
+                  {getCategoryName(project.category)}
                 </Badge>
                 <h1 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">{project.title}</h1>
                 {project.createdAt && (
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Calendar className="mr-2 h-4 w-4" />
-                    <span>Ditambahkan {new Date(project.createdAt).toLocaleDateString("id-ID")}</span>
+                    <span>Ditambahkan {formatLongDate(project.createdAt)}</span>
                   </div>
                 )}
               </div>
 
-              <div className="flex gap-3 flex-shrink-0">
+              <div className="flex flex-wrap gap-3 flex-shrink-0">
                 {project.githubUrl && (
                   <Button asChild variant="outline" size="sm">
                     <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -121,20 +129,35 @@ export default function ProjectDetail() {
             {/* Galeri Foto: foto utama besar + thumbnail bisa diklik */}
             {uniqueImages.length > 0 && (
               <div className="mb-10 space-y-3">
-                <div className="rounded-2xl overflow-hidden border border-border bg-muted shadow-sm">
-                  <DriveImage
-                    src={activeImage}
-                    alt={project.title}
-                    className="w-full h-auto max-h-[480px] object-cover"
-                    fallbackClassName="w-full h-72"
-                  />
+                <div className="rounded-2xl overflow-hidden border border-border bg-muted shadow-sm flex items-center justify-center">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={activeImage}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full"
+                    >
+                      {/* object-contain: screenshot tinggi/portrait tidak terpotong */}
+                      <DriveImage
+                        src={activeImage}
+                        alt={project.title}
+                        className="mx-auto w-auto max-w-full h-auto max-h-[520px] object-contain"
+                        fallbackClassName="w-full h-72"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
                 {uniqueImages.length > 1 && (
                   <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
                     {uniqueImages.map((img, idx) => (
                       <button
-                        key={idx}
+                        key={img}
+                        type="button"
                         onClick={() => setActiveImage(img)}
+                        aria-label={`Tampilkan foto ${idx + 1}`}
+                        aria-pressed={activeImage === img}
                         className={cn(
                           "flex-shrink-0 h-20 w-28 rounded-lg overflow-hidden border-2 transition-all",
                           activeImage === img

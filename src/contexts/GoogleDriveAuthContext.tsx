@@ -5,6 +5,8 @@ import { createContext, useCallback, useContext, useEffect, useState, ReactNode 
 // file lain di Drive milik admin.
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 const TOKEN_STORAGE_KEY = "darrell-site-gdrive-token";
+const GIS_SCRIPT_ID = "google-identity-services";
+const GIS_SCRIPT_SRC = "https://accounts.google.com/gsi/client";
 
 interface StoredToken {
   accessToken: string;
@@ -14,6 +16,7 @@ interface StoredToken {
 interface GoogleDriveAuthContextType {
   isConnected: boolean;
   isReady: boolean; // GIS script sudah dimuat
+  loadFailed: boolean; // GIS script gagal dimuat (mis. diblokir adblocker)
   connecting: boolean;
   connect: () => void;
   disconnect: () => void;
@@ -23,6 +26,7 @@ interface GoogleDriveAuthContextType {
 const GoogleDriveAuthContext = createContext<GoogleDriveAuthContextType>({
   isConnected: false,
   isReady: false,
+  loadFailed: false,
   connecting: false,
   connect: () => {},
   disconnect: () => {},
@@ -43,36 +47,77 @@ function readStoredToken(): StoredToken | null {
 }
 
 function writeStoredToken(token: StoredToken) {
-  localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(token));
+  try {
+    localStorage.setItem(TOKEN_STORAGE_KEY, JSON.stringify(token));
+  } catch {
+    // storage tidak tersedia; token tetap hidup di state selama tab terbuka
+  }
 }
 
 function clearStoredToken() {
-  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  try {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+  } catch {
+    // abaikan
+  }
+}
+
+/**
+ * Memuat script Google Identity Services hanya saat dibutuhkan (admin panel),
+ * supaya pengunjung halaman publik tidak ikut mengunduhnya.
+ */
+function loadGisScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.oauth2) {
+      resolve();
+      return;
+    }
+    let script = document.getElementById(GIS_SCRIPT_ID) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement("script");
+      script.id = GIS_SCRIPT_ID;
+      script.src = GIS_SCRIPT_SRC;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", () => resolve());
+    script.addEventListener("error", () => reject(new Error("Gagal memuat Google Identity Services")));
+  });
 }
 
 export function GoogleDriveAuthProvider({ children }: { children: ReactNode }) {
   const [isReady, setIsReady] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [token, setToken] = useState<StoredToken | null>(() => readStoredToken());
 
   useEffect(() => {
-    // Tunggu script Google Identity Services selesai dimuat (dari index.html)
-    const checkReady = () => {
-      if (window.google?.accounts?.oauth2) {
-        setIsReady(true);
-        return true;
-      }
-      return false;
+    let cancelled = false;
+    loadGisScript()
+      .then(() => !cancelled && setIsReady(true))
+      .catch(() => !cancelled && setLoadFailed(true));
+    return () => {
+      cancelled = true;
     };
-
-    if (checkReady()) return;
-
-    const interval = setInterval(() => {
-      if (checkReady()) clearInterval(interval);
-    }, 200);
-
-    return () => clearInterval(interval);
   }, []);
+
+  // Tandai otomatis sebagai terputus begitu token kedaluwarsa,
+  // supaya status "Drive Terhubung" tidak menyesatkan.
+  useEffect(() => {
+    if (!token) return;
+    const msLeft = token.expiresAt - Date.now();
+    if (msLeft <= 0) {
+      clearStoredToken();
+      setToken(null);
+      return;
+    }
+    const timer = setTimeout(() => {
+      clearStoredToken();
+      setToken(null);
+    }, msLeft);
+    return () => clearTimeout(timer);
+  }, [token]);
 
   const connect = useCallback(() => {
     if (!window.google?.accounts?.oauth2) return;
@@ -89,7 +134,7 @@ export function GoogleDriveAuthProvider({ children }: { children: ReactNode }) {
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id: clientId,
       scope: DRIVE_SCOPE,
-      callback: (response: { access_token?: string; expires_in?: number; error?: string }) => {
+      callback: (response) => {
         setConnecting(false);
         if (response.error || !response.access_token) {
           console.error("Google OAuth error:", response.error);
@@ -102,6 +147,11 @@ export function GoogleDriveAuthProvider({ children }: { children: ReactNode }) {
         };
         writeStoredToken(newToken);
         setToken(newToken);
+      },
+      // Dipanggil kalau popup ditutup / diblokir — tanpa ini status "Menghubungkan..." macet.
+      error_callback: (error) => {
+        console.warn("Google OAuth popup:", error.type);
+        setConnecting(false);
       },
     });
 
@@ -117,19 +167,20 @@ export function GoogleDriveAuthProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   const getAccessToken = useCallback(() => {
-    const current = readStoredToken();
+    const current = token && Date.now() < token.expiresAt ? token : readStoredToken();
     if (!current) {
       setToken(null);
       return null;
     }
     return current.accessToken;
-  }, []);
+  }, [token]);
 
   return (
     <GoogleDriveAuthContext.Provider
       value={{
         isConnected: !!token,
         isReady,
+        loadFailed,
         connecting,
         connect,
         disconnect,
@@ -143,25 +194,4 @@ export function GoogleDriveAuthProvider({ children }: { children: ReactNode }) {
 
 export function useGoogleDriveAuth() {
   return useContext(GoogleDriveAuthContext);
-}
-
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        oauth2: {
-          initTokenClient: (config: {
-            client_id: string;
-            scope: string;
-            callback: (response: {
-              access_token?: string;
-              expires_in?: number;
-              error?: string;
-            }) => void;
-          }) => { requestAccessToken: () => void };
-          revoke: (token: string, callback: () => void) => void;
-        };
-      };
-    };
-  }
 }

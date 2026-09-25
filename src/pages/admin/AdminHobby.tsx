@@ -4,7 +4,7 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, Loader2, Coffee } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { DriveImage } from "@/components/DriveImage";
@@ -12,6 +12,7 @@ import { DriveUploadButton } from "@/components/DriveUploadButton";
 import { HOBBY_DRIVE_FOLDER_URL } from "@/lib/gdrive";
 import type { HobbyMoment } from "@/data/types";
 import { HOBBY_CATEGORIES_SUGGESTIONS } from "@/data/types";
+import { sortByDateDesc } from "@/lib/date";
 
 const emptyForm = {
   title: "",
@@ -27,6 +28,7 @@ export default function AdminHobby() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
   const momentsCollection = collection(db, "hobbyMoments");
@@ -36,8 +38,7 @@ export default function AdminHobby() {
     try {
       const data = await getDocs(momentsCollection);
       const list = data.docs.map((d) => ({ ...d.data(), id: d.id })) as HobbyMoment[];
-      list.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-      setMoments(list);
+      setMoments(sortByDateDesc(list, (m) => m.createdAt));
     } catch (error) {
       console.error(error);
       toast({ variant: "destructive", title: "Error", description: "Gagal mengambil data momen hobi." });
@@ -48,10 +49,12 @@ export default function AdminHobby() {
 
   useEffect(() => {
     fetchMoments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openNew = () => {
     setIsEditing(false);
+    setCurrentId(null);
     setForm(emptyForm);
     setOpen(true);
   };
@@ -60,30 +63,31 @@ export default function AdminHobby() {
     setIsEditing(true);
     setCurrentId(m.id);
     setForm({
-      title: m.title,
-      description: m.description,
-      image: m.image,
-      category: m.category,
+      title: m.title || "",
+      description: m.description || "",
+      image: m.image || "",
+      category: m.category || "",
     });
     setOpen(true);
   };
 
   const handleSave = async () => {
-    if (!form.title || !form.image) {
+    if (!form.title.trim() || !form.image.trim()) {
       toast({ variant: "destructive", title: "Belum lengkap", description: "Judul dan foto wajib diisi." });
       return;
     }
 
     const payload = {
-      title: form.title,
-      description: form.description,
-      image: form.image,
-      category: form.category || "Lainnya",
+      title: form.title.trim(),
+      description: form.description.trim(),
+      image: form.image.trim(),
+      category: form.category.trim() || "Lainnya",
       createdAt: isEditing
         ? moments.find((m) => m.id === currentId)?.createdAt || new Date().toISOString()
         : new Date().toISOString(),
     };
 
+    setSaving(true);
     try {
       if (isEditing && currentId) {
         await updateDoc(doc(db, "hobbyMoments", currentId), payload);
@@ -97,6 +101,8 @@ export default function AdminHobby() {
     } catch (error) {
       console.error(error);
       toast({ variant: "destructive", title: "Error", description: "Gagal menyimpan momen hobi." });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -113,7 +119,7 @@ export default function AdminHobby() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Coffee className="h-5 w-5 text-accent" /> Hobi & Galeri Manager
@@ -122,7 +128,7 @@ export default function AdminHobby() {
             Upload momen kecil — kopi yang diseduh, sesi gaming, atau apa pun yang sedang dinikmati.
           </p>
         </div>
-        <Button onClick={openNew}>
+        <Button onClick={openNew} className="self-start sm:self-auto flex-shrink-0">
           <Plus className="mr-2 h-4 w-4" /> Unggah Momen
         </Button>
       </div>
@@ -151,11 +157,12 @@ export default function AdminHobby() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-primary uppercase tracking-wide">{m.category}</span>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openEdit(m)}>
+                  {/* Selalu terlihat di layar sentuh; muncul saat hover di perangkat dengan mouse */}
+                  <div className="flex gap-1 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 focus-within:opacity-100">
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(m)} aria-label={`Edit ${m.title}`}>
                       <Pencil className="h-3.5 w-3.5" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDelete(m.id)}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDelete(m.id)} aria-label={`Hapus ${m.title}`}>
                       <Trash2 className="h-3.5 w-3.5 text-destructive" />
                     </Button>
                   </div>
@@ -168,15 +175,17 @@ export default function AdminHobby() {
         </div>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={(v) => !saving && setOpen(v)}>
         <DialogContent className="max-w-lg max-h-[88vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{isEditing ? "Edit Momen" : "Unggah Momen Baru"}</DialogTitle>
+            <DialogDescription>Momen tampil di tab "Momen Hobi" halaman Writing & Hobi.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <label className="text-sm font-medium mb-1 block">Judul</label>
+              <label htmlFor="hobby-title" className="text-sm font-medium mb-1 block">Judul *</label>
               <Input
+                id="hobby-title"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="mis. V60 Ethiopia Yirgacheffe"
@@ -184,8 +193,9 @@ export default function AdminHobby() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-1 block">Deskripsi</label>
+              <label htmlFor="hobby-desc" className="text-sm font-medium mb-1 block">Deskripsi</label>
               <Textarea
+                id="hobby-desc"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={4}
@@ -194,8 +204,9 @@ export default function AdminHobby() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-1 block">Kategori</label>
+              <label htmlFor="hobby-category" className="text-sm font-medium mb-1 block">Kategori</label>
               <Input
+                id="hobby-category"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
                 placeholder="Kopi / Gaming / Tokusatsu / ..."
@@ -210,7 +221,7 @@ export default function AdminHobby() {
 
             <div className="border border-border rounded-xl p-4 space-y-2 bg-secondary/20">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold">Foto</label>
+                <label className="text-sm font-semibold">Foto *</label>
                 <a href={HOBBY_DRIVE_FOLDER_URL} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
                   Buka folder Drive
                 </a>
@@ -222,6 +233,7 @@ export default function AdminHobby() {
                 <div className="h-px flex-1 bg-border" />
               </div>
               <Input
+                aria-label="Link foto Google Drive"
                 value={form.image}
                 onChange={(e) => setForm({ ...form, image: e.target.value })}
                 placeholder="Paste link share Google Drive di sini..."
@@ -243,10 +255,13 @@ export default function AdminHobby() {
             </div>
 
             <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={() => setOpen(false)}>
+              <Button variant="outline" onClick={() => setOpen(false)} disabled={saving}>
                 Batal
               </Button>
-              <Button onClick={handleSave}>{isEditing ? "Update Momen" : "Simpan Momen"}</Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isEditing ? "Update Momen" : "Simpan Momen"}
+              </Button>
             </div>
           </div>
         </DialogContent>

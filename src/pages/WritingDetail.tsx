@@ -9,26 +9,35 @@ import { DriveImage } from "@/components/DriveImage";
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import type { Writing } from "@/data/types";
+import { useDocumentTitle } from "@/hooks/use-document-title";
+import { formatLongDate } from "@/lib/date";
 
 export default function WritingDetail() {
   const { id } = useParams();
   const [writing, setWriting] = useState<Writing | null>(null);
   const [loading, setLoading] = useState(true);
+  useDocumentTitle(writing?.title || (loading ? undefined : "Tulisan tidak ditemukan"));
 
   useEffect(() => {
     const fetchWriting = async () => {
-      if (!id) return;
+      if (!id) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const docRef = doc(db, "writings", id);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        // Draft tidak ditampilkan ke publik (admin tetap bisa baca dari panel admin).
+        if (docSnap.exists() && docSnap.data().published !== false) {
           setWriting({ id: docSnap.id, ...docSnap.data() } as Writing);
         } else {
           setWriting(null);
         }
       } catch (error) {
+        // Termasuk "permission denied" untuk draft saat tidak login -> tampil sebagai tidak ditemukan.
         console.error("Error fetching writing:", error);
+        setWriting(null);
       } finally {
         setLoading(false);
       }
@@ -65,7 +74,7 @@ export default function WritingDetail() {
 
   return (
     <PublicLayout>
-      <article className="pb-16">
+      <article className="pt-10 pb-16 md:pt-14">
         <div className="container-custom max-w-3xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Link
@@ -88,11 +97,7 @@ export default function WritingDetail() {
               {writing.createdAt && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="mr-2 h-4 w-4" />
-                  {new Date(writing.createdAt).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
+                  {formatLongDate(writing.createdAt)}
                 </div>
               )}
             </div>
@@ -108,14 +113,16 @@ export default function WritingDetail() {
               </div>
             )}
 
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              {writing.content?.split("\n").map((paragraph, idx) =>
-                paragraph.trim() ? (
-                  <p key={idx} className="text-foreground/90 leading-relaxed mb-5 whitespace-pre-line">
+            <div className="max-w-none text-base md:text-lg">
+              {writing.content
+                ?.split("\n")
+                .map((p) => p.trim())
+                .filter(Boolean)
+                .map((paragraph, idx) => (
+                  <p key={idx} className="text-foreground/90 leading-[1.85] mb-6">
                     {paragraph}
                   </p>
-                ) : null
-              )}
+                ))}
             </div>
           </motion.div>
         </div>

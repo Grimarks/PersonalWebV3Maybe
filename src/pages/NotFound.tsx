@@ -2,9 +2,11 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 
 const NotFound = () => {
   const location = useLocation();
+  useDocumentTitle("Halaman tidak ditemukan");
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, deleteDoc, doc, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, orderBy, query, updateDoc } from "firebase/firestore";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Mail, Calendar, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Trash2, Mail, MailOpen, Calendar, Reply } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
 import type { ContactMessage } from "@/data/types";
+import { formatDateTime } from "@/lib/date";
+import { cn } from "@/lib/utils";
 
 export default function AdminMessages() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
@@ -14,7 +16,6 @@ export default function AdminMessages() {
   const { toast } = useToast();
 
   const fetchMessages = async () => {
-    setLoading(true);
     try {
       const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
       const snapshot = await getDocs(q);
@@ -30,35 +31,53 @@ export default function AdminMessages() {
 
   useEffect(() => {
     fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const toggleRead = async (msg: ContactMessage) => {
+    const read = !msg.read;
+    // Optimistic update supaya terasa instan
+    setMessages((list) => list.map((m) => (m.id === msg.id ? { ...m, read } : m)));
+    try {
+      await updateDoc(doc(db, "messages", msg.id), { read });
+    } catch (error) {
+      console.error(error);
+      setMessages((list) => list.map((m) => (m.id === msg.id ? { ...m, read: !read } : m)));
+      toast({ variant: "destructive", title: "Error", description: "Gagal memperbarui status pesan." });
+    }
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Apakah Anda yakin ingin menghapus pesan ini?")) return;
     try {
       await deleteDoc(doc(db, "messages", id));
+      setMessages((list) => list.filter((m) => m.id !== id));
       toast({ title: "Pesan Dihapus", description: "Pesan berhasil dihapus dari database." });
-      fetchMessages();
     } catch (error) {
       toast({ variant: "destructive", title: "Error", description: "Gagal menghapus pesan." });
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center p-10">
-        <Loader2 className="animate-spin text-primary" />
-      </div>
-    );
-  }
+  const unreadCount = messages.filter((m) => !m.read).length;
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-bold text-foreground">Inbox Messages</h1>
-        <span className="text-muted-foreground text-sm">{messages.length} pesan</span>
+        {!loading && (
+          <span className="text-muted-foreground text-sm">
+            {messages.length} pesan{unreadCount > 0 && ` · ${unreadCount} belum dibaca`}
+          </span>
+        )}
       </div>
 
-      {messages.length === 0 ? (
+      {loading ? (
+        <div className="grid gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-44 w-full rounded-xl" />
+          ))}
+        </div>
+      ) : messages.length === 0 ? (
         <div className="text-center py-10 soft-card">
           <Mail className="mx-auto h-10 w-10 text-muted-foreground mb-3" />
           <p className="text-muted-foreground">Belum ada pesan masuk.</p>
@@ -66,33 +85,62 @@ export default function AdminMessages() {
       ) : (
         <div className="grid gap-4">
           {messages.map((msg) => (
-            <Card key={msg.id} className="relative group hover:shadow-md transition-shadow border-border">
+            <Card
+              key={msg.id}
+              className={cn(
+                "relative transition-shadow hover:shadow-md",
+                !msg.read ? "border-primary/40 bg-primary/[0.03]" : "border-border"
+              )}
+            >
               <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <CardTitle className="text-lg font-semibold">{msg.subject}</CardTitle>
-                    <CardDescription className="flex items-center gap-2">
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-start gap-2">
+                  <div className="space-y-1 min-w-0">
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                      {!msg.read && <span className="h-2 w-2 flex-shrink-0 rounded-full bg-primary" aria-label="Belum dibaca" />}
+                      <span className="break-words">{msg.subject}</span>
+                    </CardTitle>
+                    <CardDescription className="flex flex-wrap items-center gap-x-2">
                       <span className="font-medium text-foreground">{msg.name}</span>
-                      <span className="text-muted-foreground">&lt;{msg.email}&gt;</span>
+                      <span className="text-muted-foreground break-all">&lt;{msg.email}&gt;</span>
                     </CardDescription>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-destructive opacity-70 hover:opacity-100 hover:bg-destructive/10"
-                    onClick={() => handleDelete(msg.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <div className="flex gap-1 self-end sm:self-auto">
+                    <Button asChild variant="ghost" size="icon" title="Balas lewat email">
+                      <a
+                        href={`mailto:${msg.email}?subject=${encodeURIComponent(`Re: ${msg.subject}`)}`}
+                        aria-label="Balas lewat email"
+                      >
+                        <Reply className="w-4 h-4" />
+                      </a>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => toggleRead(msg)}
+                      title={msg.read ? "Tandai belum dibaca" : "Tandai sudah dibaca"}
+                      aria-label={msg.read ? "Tandai belum dibaca" : "Tandai sudah dibaca"}
+                    >
+                      {msg.read ? <Mail className="w-4 h-4" /> : <MailOpen className="w-4 h-4" />}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive hover:bg-destructive/10"
+                      onClick={() => handleDelete(msg.id)}
+                      aria-label="Hapus pesan"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="bg-secondary/30 p-4 rounded-lg text-sm whitespace-pre-wrap leading-relaxed mb-3">
+                <div className="bg-secondary/30 p-4 rounded-lg text-sm whitespace-pre-wrap break-words leading-relaxed mb-3">
                   {msg.message}
                 </div>
                 <div className="flex items-center text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3 mr-1" />
-                  {msg.createdAt ? format(new Date(msg.createdAt), "PPP p") : "Tanggal tidak tersedia"}
+                  {formatDateTime(msg.createdAt) || "Tanggal tidak tersedia"}
                 </div>
               </CardContent>
             </Card>
