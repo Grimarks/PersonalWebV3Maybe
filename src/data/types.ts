@@ -26,7 +26,7 @@ export interface Category {
 export interface Skill {
   id: string;
   name: string;
-  category: "Frontend" | "Backend" | "Tools" | "Other";
+  category: "Frontend" | "Backend" | "Mobile" | "AI/ML" | "Tools" | "Other";
   level: number; // 0-100
 }
 
@@ -84,6 +84,8 @@ export const PROJECT_CATEGORIES_FALLBACK: Category[] = [
 export const SKILL_CATEGORIES: Skill["category"][] = [
   "Frontend",
   "Backend",
+  "Mobile",
+  "AI/ML",
   "Tools",
   "Other",
 ];

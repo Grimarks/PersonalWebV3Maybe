@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Code, Server, Wrench, Sparkles } from "lucide-react";
+import { Code, Server, Smartphone, Brain, Wrench, Sparkles } from "lucide-react";
 import PublicLayout from "@/components/layout/PublicLayout";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +13,8 @@ import { SKILL_CATEGORIES } from "@/data/types";
 const categoryMeta: Record<string, { icon: typeof Code; color: string }> = {
   Frontend: { icon: Code, color: "text-primary" },
   Backend: { icon: Server, color: "text-accent" },
+  Mobile: { icon: Smartphone, color: "text-primary" },
+  "AI/ML": { icon: Brain, color: "text-accent" },
   Tools: { icon: Wrench, color: "text-primary" },
   Other: { icon: Sparkles, color: "text-accent" },
 };

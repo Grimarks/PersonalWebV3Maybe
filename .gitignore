@@ -25,3 +25,7 @@ dist-ssr
 
 .env
 *.tsbuildinfo
+
+# Firebase service account keys (dipakai scripts/import-portfolio.mjs)
+*service-account*.json
+*serviceAccount*.json

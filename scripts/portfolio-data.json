@@ -1,0 +1,580 @@
+{
+  "firebaseProjectId": "personalwebdarrell",
+  "categories": [
+    {
+      "name": "AI / ML",
+      "slug": "ai"
+    }
+  ],
+  "projects": [
+    {
+      "title": "CampusFlow",
+      "description": "An AI-powered academic planner that turns students' courses, tasks, and deadlines into a prioritized study schedule. Cross-platform mobile app built with Flutter and FastAPI.",
+      "longDescription": "CampusFlow helps university students stay on top of coursework by combining task management with an AI study planner. Students add their courses and tasks, and the planner builds time-blocked study schedules from their available hours. A schedule can be adjusted with plain-language instructions, or students can talk through their workload in a chat and turn that conversation into a plan. When no AI key is configured, a local heuristic scheduler keeps the app fully functional.\n\nThe app runs on iOS and Android from a single Flutter codebase and talks to a FastAPI REST API with JWT authentication. Both sides are covered by automated tests (pytest on the backend; unit, widget, and integration tests on mobile).\n\nBuilt as the final project for the GDGoC Unsri Mobile Development division. I developed the whole application, both the Flutter mobile app and the FastAPI backend, including the Groq-powered AI planner, biometric login, and local notifications.",
+      "techStack": [
+        "Flutter",
+        "Dart",
+        "Riverpod",
+        "GoRouter",
+        "Dio",
+        "Hive",
+        "Python",
+        "FastAPI",
+        "SQLAlchemy",
+        "Alembic",
+        "PostgreSQL",
+        "SQLite",
+        "JWT",
+        "Groq API",
+        "pytest"
+      ],
+      "category": "mobile-development",
+      "githubUrl": "https://github.com/Grimarks/Final-Project-Mobile-Development-GDGoC-Unsri",
+      "liveUrl": "",
+      "features": [
+        "Biometric login (Face ID / fingerprint) and in-app lock",
+        "Course and task management with server-computed priority",
+        "AI planner in three modes: generate a schedule, adjust the active plan, or chat first and plan from the conversation",
+        "PDF lecture material upload with AI summaries and a quiz generator",
+        "Pomodoro focus timer with post-session difficulty feedback",
+        "Local notifications for task deadlines and finished focus sessions",
+        "\"Today's Focus\" dashboard with statistics and a study streak",
+        "Heuristic fallback scheduler when the AI service is unavailable"
+      ],
+      "featured": true,
+      "createdAt": "2026-08-21T00:52:28Z"
+    },
+    {
+      "title": "FocusDeck",
+      "description": "A Pomodoro productivity app where you write your intentions as focus cards before each session. Built with Flutter and Firebase.",
+      "longDescription": "FocusDeck pairs a Pomodoro timer with \"focus cards\". Before starting a session, the user creates a deck with one to three cards describing exactly what they intend to work on, and those cards stay on screen while the timer runs as a reminder of the goal.\n\nEvery session, whether completed or stopped early, is saved to Firestore along with the number of pomodoros, total focus minutes, and the cards worked on. The dashboard turns this into statistics and a daily streak.\n\nBuilt as the midterm project for the GDGoC Unsri Mobile Development division. I built the app, including authentication, the deck builder, the timer, and session tracking.",
+      "techStack": [
+        "Flutter",
+        "Dart",
+        "Riverpod",
+        "GoRouter",
+        "Firebase Authentication",
+        "Firestore",
+        "flutter_animate"
+      ],
+      "category": "mobile-development",
+      "githubUrl": "https://github.com/Grimarks/Midterm-Mobile-Development-GDGoC-Unsri",
+      "liveUrl": "",
+      "features": [
+        "Email and password authentication with a persistent session",
+        "Deck builder: create, edit, and delete color-coded decks with up to three focus cards",
+        "Pomodoro timer (25/5/15) with tap to start or pause, phase skipping, and a circular progress indicator",
+        "Session tracking saved to Firestore",
+        "Dashboard with total sessions, total focus time, and a daily streak",
+        "Session history with status and timestamps",
+        "Dark theme with smooth animations and micro-interactions"
+      ],
+      "featured": false,
+      "createdAt": "2026-06-20T15:44:20Z"
+    },
+    {
+      "title": "NeoFund",
+      "description": "A peer-to-peer lending simulation platform with separate portals for customers and administrators.",
+      "longDescription": "NeoFund simulates an end-to-end digital lending workflow. New customers register and wait for manual admin verification before they can sign in. Once approved, they can apply for loans with a real-time installment calculator, track each application and its repayment timeline, and upload proof of payment for every installment.\n\nAdministrators work from a separate portal where they verify new customers, approve or reject loan applications, confirm payments, and review analytics and reports. Access is role-based, so customers and admins can only reach their own portal.\n\nI designed and built the entire application as a solo project.",
+      "techStack": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "TanStack Start",
+        "TanStack Router",
+        "TanStack Query",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Recharts",
+        "Firebase Authentication",
+        "Firestore"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/SIBANK-NEOFUND",
+      "liveUrl": "https://neofund.vercel.app",
+      "features": [
+        "Role-based login with protected routes for customers and admins",
+        "Registration with a pending state until an admin verifies the account",
+        "Loan calculator with amount slider, tenor selection, and real-time installment estimate",
+        "Loan history with Pending / Approved / Rejected status and an installment timeline",
+        "Payment proof upload with admin verification",
+        "Customer dashboard with a projected debt-reduction chart",
+        "Admin tools for customer management, loan approval, payment verification, and reports"
+      ],
+      "featured": true,
+      "createdAt": "2026-05-08T08:03:21Z"
+    },
+    {
+      "title": "GDGoC Manager",
+      "description": "An internal management dashboard for GDGoC Universitas Sriwijaya to organize members, projects, and the core team.",
+      "longDescription": "GDGoC Manager is an internal platform for Google Developer Groups on Campus (GDGoC) Universitas Sriwijaya. It gives the community one place to keep track of its members, ongoing projects, and core team structure, replacing scattered spreadsheets.\n\nThe dashboard shows member and activity statistics. Leads and co-leads can manage the member list with search and role filters, and projects are tracked by division with status, progress, and deadlines. Authentication and data storage are handled by Firebase, and the layout adapts to both desktop and mobile.\n\nI built the application as a solo project.",
+      "techStack": [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "React Router",
+        "TanStack Query",
+        "Firebase Authentication",
+        "Firestore"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/gdgoc_manager",
+      "liveUrl": "https://gdgoc-manager.vercel.app",
+      "features": [
+        "Dashboard with member statistics and recent activity",
+        "Member directory with search, role filter, and CRUD for leads and co-leads",
+        "Project tracking per division with status, progress bar, and deadlines",
+        "Core team organization view",
+        "Login and registration with Firebase Authentication",
+        "Responsive sidebar layout for desktop and mobile"
+      ],
+      "featured": false,
+      "createdAt": "2025-12-04T03:34:42Z"
+    },
+    {
+      "title": "Event Ticketing REST API",
+      "description": "A RESTful API for an online event ticketing platform, built in Go with Fiber, GORM, and JWT authentication.",
+      "longDescription": "A backend service for booking tickets to online events, built as the final study case of a backend programming series. Users register and log in to receive a JWT, and role-based middleware separates admins, who create events, from regular users, who browse events and purchase tickets through transactions.\n\nThe service follows a layered structure (config, models, controllers, middleware, routes), persists data in MySQL through GORM, and documents its endpoints with a Swagger/OpenAPI specification.",
+      "techStack": [
+        "Go",
+        "Fiber",
+        "GORM",
+        "MySQL",
+        "JWT",
+        "Swagger"
+      ],
+      "category": "backend",
+      "githubUrl": "https://github.com/Grimarks/BE_StudyCase_Darrell-Satriano",
+      "liveUrl": "",
+      "features": [
+        "User registration and login with JWT authentication",
+        "Role-based access control for admins and users",
+        "Event creation and listing endpoints",
+        "Ticket purchase transactions",
+        "MySQL persistence with GORM",
+        "Swagger/OpenAPI documentation"
+      ],
+      "featured": false,
+      "createdAt": "2025-12-26T11:00:25Z"
+    },
+    {
+      "title": "EduTest+",
+      "description": "An online test simulation platform with premium classes, built with a Go (Fiber) backend and a React frontend.",
+      "longDescription": "EduTest+ is a web platform for practicing online tests and accessing premium classes. Students pick a test by category or difficulty, answer questions against a timer, and get their score right away along with detailed explanations. Premium access works through an order flow: the student places an order and uploads proof of payment, then an admin verifies it and the account is upgraded automatically with an expiry date.\n\nThe backend is a Go REST API built with Fiber and GORM on MySQL, using Redis for refresh-token sessions and JWT stored in httpOnly cookies. It is containerized with Docker Compose. The frontend is a React single-page app styled with Tailwind CSS and shadcn/ui.\n\nThis was a team project. I built the React frontend and co-developed the Go backend.",
+      "techStack": [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "React Router",
+        "Axios",
+        "Go",
+        "Fiber",
+        "GORM",
+        "MySQL",
+        "Redis",
+        "JWT",
+        "Docker"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/Project_EduTest",
+      "liveUrl": "",
+      "features": [
+        "Registration and login with JWT in httpOnly cookies and Redis-backed refresh tokens",
+        "Student dashboard with average score, completed tests, and recommendations",
+        "Timed tests with question navigation and instant scoring",
+        "Result page with detailed answer explanations",
+        "Premium subscription orders with payment proof upload",
+        "Admin panel for verifying orders and managing tests and questions",
+        "Dockerized development environment"
+      ],
+      "featured": false,
+      "createdAt": "2025-09-01T13:38:28Z"
+    },
+    {
+      "title": "MyBusiness",
+      "description": "A campus canteen ordering web app that helps small food businesses sell online, with separate experiences for customers and store owners.",
+      "longDescription": "MyBusiness is a prototype that digitalizes food ordering at campus canteens, making it easier for small business owners to sell and for students and staff to order.\n\nCustomers browse menus from multiple canteens, search and filter by campus location (Bukit / Indralaya), save favorites, add items to a cart, and check out for pickup or delivery. They can then follow each order's status in their history. Store owners get their own portal to manage menu items and stock availability, process incoming orders, track revenue, and edit their store profile.\n\nI built the application as a solo project with React and Firebase. Image uploads are routed to Google Drive through Google Apps Script.",
+      "techStack": [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Tailwind CSS",
+        "React Router",
+        "Firebase Authentication",
+        "Firestore",
+        "Heroicons",
+        "Google Apps Script"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/MyBusiness",
+      "liveUrl": "https://mybusiness.satriano.me",
+      "features": [
+        "Separate customer and store-owner roles with their own login",
+        "Menu browsing with search and campus location filter",
+        "Favorites and shopping cart",
+        "Checkout with pickup or delivery options",
+        "Order history with processing status",
+        "Menu management (add, edit, delete, stock and Ready / Sold out status)",
+        "Revenue dashboard and incoming order management for owners",
+        "Store and account profile editing"
+      ],
+      "featured": true,
+      "createdAt": "2025-07-27T03:04:12Z"
+    },
+    {
+      "title": "MediaHeaven",
+      "description": "A movie discovery web app for browsing, searching, and saving films from TMDB, with a shared community feed.",
+      "longDescription": "MediaHeaven lets users explore popular, top-rated, and now-playing movies pulled live from the TMDB API, search the full catalog, and open any title to see its synopsis, rating, runtime, release date, and genres. Signed-in users can keep a personal watchlist and join a shared community feed to talk about what they are watching.\n\nThe React frontend is deployed on Vercel. Accounts, watchlists, and community posts go through Vercel Serverless Functions that use the Firebase Admin SDK with Firestore, and passwords are hashed with bcrypt.\n\nI built the application as a solo project.",
+      "techStack": [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Tailwind CSS",
+        "React Router",
+        "Vercel Serverless Functions",
+        "Firebase Admin SDK",
+        "Firestore",
+        "bcrypt",
+        "TMDB API"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/MediaHeavenReact",
+      "liveUrl": "https://media-heaven-react.vercel.app/",
+      "features": [
+        "Browse popular, top-rated, and now-playing movies",
+        "Full-text movie search",
+        "Movie detail view with synopsis, rating, runtime, and genres",
+        "Personal watchlist tied to the user's account",
+        "Community comment feed",
+        "Sign up and log in"
+      ],
+      "featured": false,
+      "createdAt": "2025-07-08T14:04:52Z"
+    },
+    {
+      "title": "KostQu",
+      "description": "A boarding house (kost) search website with listings, detail pages, and rental price calculation, backed by Node.js and MySQL.",
+      "longDescription": "KostQu is a website for finding boarding houses (kost). Visitors can search listings, open a detail page with photos and contact information, and see the rental price for their chosen duration before moving on to a payment page.\n\nThe frontend is built with plain HTML, CSS, and JavaScript. It talks to an Express server that queries a MySQL database for listings, details, and duration-based pricing.\n\nI built the project as a solo project.",
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Node.js",
+        "Express",
+        "MySQL"
+      ],
+      "category": "web",
+      "githubUrl": "https://github.com/Grimarks/Project-KostQu",
+      "liveUrl": "",
+      "features": [
+        "Kost listing with search",
+        "Detail page with photos, address, and contact",
+        "Rental price calculation by duration",
+        "Payment page",
+        "REST endpoints served by Express with a MySQL database"
+      ],
+      "featured": false,
+      "createdAt": "2024-08-16T13:49:07Z"
+    },
+    {
+      "title": "Indonesian POS Tagging: BiLSTM vs IndoBERT",
+      "description": "Part-of-speech tagging for Indonesian that compares a BiLSTM baseline with a fine-tuned IndoBERT model, served through a Streamlit demo.",
+      "longDescription": "This project implements part-of-speech tagging for Indonesian using the UD Indonesian-GSD treebank and compares two approaches: a BiLSTM sequence-labeling model trained from scratch, and a fine-tuned IndoBERT (indobenchmark/indobert-base-p1) token-classification model.\n\nThe pipeline covers parsing the CoNLL-U data, building vocabularies, encoding, training both models in PyTorch, and evaluating them with precision, recall, and F1 via seqeval. On the evaluation subset, IndoBERT reached a weighted F1 of about 0.89 compared with about 0.74 for the BiLSTM, and it outperformed the BiLSTM on almost every POS category. A Streamlit app lets users tag their own sentences with the trained models.",
+      "techStack": [
+        "Python",
+        "PyTorch",
+        "Hugging Face Transformers",
+        "IndoBERT",
+        "Streamlit",
+        "pandas",
+        "seqeval"
+      ],
+      "category": "ai",
+      "githubUrl": "https://github.com/Grimarks/NLP-POS",
+      "liveUrl": "",
+      "features": [
+        "CoNLL-U parsing and vocabulary building from UD Indonesian-GSD",
+        "BiLSTM POS tagger trained from scratch",
+        "Fine-tuned IndoBERT token-classification model",
+        "Evaluation with precision, recall, and F1 (seqeval)",
+        "Model comparison: IndoBERT weighted F1 ~0.89 vs BiLSTM ~0.74",
+        "Streamlit app for interactive tagging"
+      ],
+      "featured": false,
+      "createdAt": "2026-03-05T14:55:07Z"
+    },
+    {
+      "title": "Smartphone Addiction Classification with MLP",
+      "description": "Classifies smartphone addiction levels (Mild, Moderate, Severe) with a Multi-Layer Perceptron and compares four network configurations.",
+      "longDescription": "This project applies a Multi-Layer Perceptron to classify smartphone addiction levels into Mild, Moderate, or Severe, using a 7,500-row smartphone usage dataset with features such as screen time, social media and gaming hours, sleep, notifications, and stress level.\n\nThe workflow includes data cleaning, label encoding, standardization, and a stratified 80/20 split. Four architectures are compared, varying the number of hidden layers (1 or 2) and neurons per layer (16 or 32). The best configuration, two hidden layers with 16 neurons each, reached 54.75% test accuracy, and the results are analyzed with confusion matrices, accuracy comparisons, and loss curves.\n\nI built the data pipeline, model experiments, and analysis. A teammate added the Streamlit simulation.",
+      "techStack": [
+        "Python",
+        "scikit-learn",
+        "pandas",
+        "NumPy",
+        "Matplotlib",
+        "Seaborn",
+        "Streamlit"
+      ],
+      "category": "ai",
+      "githubUrl": "https://github.com/Grimarks/Klasifikasi-TingkatKecanduan-MLP",
+      "liveUrl": "",
+      "features": [
+        "Data cleaning, label encoding, and standardization",
+        "Stratified train/test split",
+        "Comparison of four MLP architectures (1-2 hidden layers, 16-32 neurons)",
+        "Evaluation with a classification report, confusion matrix, and loss curves",
+        "Exploratory data analysis visualizations",
+        "Streamlit app for trying predictions"
+      ],
+      "featured": false,
+      "createdAt": "2026-05-05T03:15:15Z"
+    }
+  ],
+  "skills": [
+    {
+      "name": "React",
+      "category": "Frontend",
+      "level": 75
+    },
+    {
+      "name": "TypeScript",
+      "category": "Frontend",
+      "level": 70
+    },
+    {
+      "name": "JavaScript",
+      "category": "Frontend",
+      "level": 75
+    },
+    {
+      "name": "HTML",
+      "category": "Frontend",
+      "level": 45
+    },
+    {
+      "name": "CSS",
+      "category": "Frontend",
+      "level": 45
+    },
+    {
+      "name": "Tailwind CSS",
+      "category": "Frontend",
+      "level": 75
+    },
+    {
+      "name": "Vite",
+      "category": "Frontend",
+      "level": 75
+    },
+    {
+      "name": "React Router",
+      "category": "Frontend",
+      "level": 70
+    },
+    {
+      "name": "TanStack Query",
+      "category": "Frontend",
+      "level": 55
+    },
+    {
+      "name": "TanStack Router",
+      "category": "Frontend",
+      "level": 45
+    },
+    {
+      "name": "TanStack Start",
+      "category": "Frontend",
+      "level": 45
+    },
+    {
+      "name": "shadcn/ui",
+      "category": "Frontend",
+      "level": 65
+    },
+    {
+      "name": "Recharts",
+      "category": "Frontend",
+      "level": 45
+    },
+    {
+      "name": "Go",
+      "category": "Backend",
+      "level": 55
+    },
+    {
+      "name": "Fiber",
+      "category": "Backend",
+      "level": 55
+    },
+    {
+      "name": "GORM",
+      "category": "Backend",
+      "level": 55
+    },
+    {
+      "name": "Python",
+      "category": "Backend",
+      "level": 80
+    },
+    {
+      "name": "FastAPI",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "SQLAlchemy",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "Alembic",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "Node.js",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "Express",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "MySQL",
+      "category": "Backend",
+      "level": 65
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "SQLite",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "Firestore",
+      "category": "Backend",
+      "level": 75
+    },
+    {
+      "name": "Firebase Authentication",
+      "category": "Backend",
+      "level": 70
+    },
+    {
+      "name": "Firebase Admin SDK",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "Vercel Serverless Functions",
+      "category": "Backend",
+      "level": 45
+    },
+    {
+      "name": "JWT",
+      "category": "Backend",
+      "level": 65
+    },
+    {
+      "name": "Flutter",
+      "category": "Mobile",
+      "level": 70
+    },
+    {
+      "name": "Dart",
+      "category": "Mobile",
+      "level": 65
+    },
+    {
+      "name": "Riverpod",
+      "category": "Mobile",
+      "level": 55
+    },
+    {
+      "name": "GoRouter",
+      "category": "Mobile",
+      "level": 55
+    },
+    {
+      "name": "PyTorch",
+      "category": "AI/ML",
+      "level": 70
+    },
+    {
+      "name": "Hugging Face Transformers",
+      "category": "AI/ML",
+      "level": 75
+    },
+    {
+      "name": "scikit-learn",
+      "category": "AI/ML",
+      "level": 45
+    },
+    {
+      "name": "pandas",
+      "category": "AI/ML",
+      "level": 55
+    },
+    {
+      "name": "NumPy",
+      "category": "AI/ML",
+      "level": 45
+    },
+    {
+      "name": "Streamlit",
+      "category": "AI/ML",
+      "level": 55
+    },
+    {
+      "name": "Groq API",
+      "category": "AI/ML",
+      "level": 45
+    },
+    {
+      "name": "Docker",
+      "category": "Tools",
+      "level": 45
+    },
+    {
+      "name": "pytest",
+      "category": "Tools",
+      "level": 45
+    },
+    {
+      "name": "Google Apps Script",
+      "category": "Tools",
+      "level": 45
+    },
+    {
+      "name": "REST API",
+      "category": "Backend",
+      "level": 75
+    },
+    {
+      "name": "Git",
+      "category": "Tools",
+      "level": 80
+    },
+    {
+      "name": "GitHub",
+      "category": "Tools",
+      "level": 80
+    },
+    {
+      "name": "Vercel",
+      "category": "Tools",
+      "level": 70
+    }
+  ]
+}
