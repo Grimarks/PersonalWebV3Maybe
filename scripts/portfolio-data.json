@@ -9,8 +9,8 @@
   "projects": [
     {
       "title": "CampusFlow",
-      "description": "An AI-powered academic planner that turns students' courses, tasks, and deadlines into a prioritized study schedule. Cross-platform mobile app built with Flutter and FastAPI.",
-      "longDescription": "CampusFlow helps university students stay on top of coursework by combining task management with an AI study planner. Students add their courses and tasks, and the planner builds time-blocked study schedules from their available hours. A schedule can be adjusted with plain-language instructions, or students can talk through their workload in a chat and turn that conversation into a plan. When no AI key is configured, a local heuristic scheduler keeps the app fully functional.\n\nThe app runs on iOS and Android from a single Flutter codebase and talks to a FastAPI REST API with JWT authentication. Both sides are covered by automated tests (pytest on the backend; unit, widget, and integration tests on mobile).\n\nBuilt as the final project for the GDGoC Unsri Mobile Development division. I developed the whole application, both the Flutter mobile app and the FastAPI backend, including the Groq-powered AI planner, biometric login, and local notifications.",
+      "description": "Aplikasi perencana akademik berbasis AI yang mengubah mata kuliah, tugas, dan deadline mahasiswa menjadi jadwal belajar terprioritas. Aplikasi mobile lintas platform yang dibangun dengan Flutter dan FastAPI.",
+      "longDescription": "CampusFlow membantu mahasiswa mengelola perkuliahan dengan menggabungkan manajemen tugas dan AI study planner. Mahasiswa cukup memasukkan mata kuliah dan tugas, lalu planner menyusun jadwal belajar per blok waktu berdasarkan jam luang mereka. Jadwal bisa disesuaikan lewat instruksi bahasa sehari-hari, atau mahasiswa bisa lebih dulu mengobrol soal beban tugasnya lalu mengubah percakapan itu menjadi rencana belajar. Kalau API key AI tidak tersedia, penjadwal heuristik lokal tetap membuat aplikasi berfungsi penuh.\n\nAplikasi berjalan di iOS dan Android dari satu codebase Flutter dan terhubung ke REST API FastAPI dengan autentikasi JWT. Kedua sisi diuji secara otomatis (pytest di backend; unit, widget, dan integration test di mobile).\n\nDibangun sebagai final project divisi Mobile Development GDGoC Unsri. Saya mengembangkan seluruh aplikasi, baik aplikasi mobile Flutter maupun backend FastAPI, termasuk AI planner berbasis Groq, login biometrik, dan notifikasi lokal.",
       "techStack": [
         "Flutter",
         "Dart",
@@ -32,22 +32,22 @@
       "githubUrl": "https://github.com/Grimarks/Final-Project-Mobile-Development-GDGoC-Unsri",
       "liveUrl": "",
       "features": [
-        "Biometric login (Face ID / fingerprint) and in-app lock",
-        "Course and task management with server-computed priority",
-        "AI planner in three modes: generate a schedule, adjust the active plan, or chat first and plan from the conversation",
-        "PDF lecture material upload with AI summaries and a quiz generator",
-        "Pomodoro focus timer with post-session difficulty feedback",
-        "Local notifications for task deadlines and finished focus sessions",
-        "\"Today's Focus\" dashboard with statistics and a study streak",
-        "Heuristic fallback scheduler when the AI service is unavailable"
+        "Login biometrik (Face ID / sidik jari) dan kunci aplikasi",
+        "Manajemen mata kuliah dan tugas dengan prioritas yang dihitung server",
+        "AI planner dengan tiga mode: buat jadwal, sesuaikan rencana aktif, atau ngobrol dulu lalu susun rencana dari percakapan",
+        "Upload materi kuliah PDF dengan ringkasan AI dan generator kuis",
+        "Timer fokus Pomodoro dengan feedback tingkat kesulitan setelah sesi",
+        "Notifikasi lokal untuk deadline tugas dan sesi fokus yang selesai",
+        "Dashboard \"Today's Focus\" dengan statistik dan study streak",
+        "Penjadwal heuristik sebagai cadangan saat layanan AI tidak tersedia"
       ],
       "featured": true,
       "createdAt": "2026-08-21T00:52:28Z"
     },
     {
       "title": "FocusDeck",
-      "description": "A Pomodoro productivity app where you write your intentions as focus cards before each session. Built with Flutter and Firebase.",
-      "longDescription": "FocusDeck pairs a Pomodoro timer with \"focus cards\". Before starting a session, the user creates a deck with one to three cards describing exactly what they intend to work on, and those cards stay on screen while the timer runs as a reminder of the goal.\n\nEvery session, whether completed or stopped early, is saved to Firestore along with the number of pomodoros, total focus minutes, and the cards worked on. The dashboard turns this into statistics and a daily streak.\n\nBuilt as the midterm project for the GDGoC Unsri Mobile Development division. I built the app, including authentication, the deck builder, the timer, and session tracking.",
+      "description": "Aplikasi produktivitas Pomodoro yang meminta pengguna menuliskan niat kerjanya sebagai kartu fokus sebelum tiap sesi. Dibangun dengan Flutter dan Firebase.",
+      "longDescription": "FocusDeck memadukan timer Pomodoro dengan \"kartu fokus\". Sebelum memulai sesi, pengguna membuat deck berisi satu sampai tiga kartu yang menjelaskan apa yang ingin dikerjakan, dan kartu-kartu itu tetap tampil selama timer berjalan sebagai pengingat tujuan.\n\nSetiap sesi, baik yang selesai maupun dihentikan di tengah jalan, tersimpan ke Firestore lengkap dengan jumlah pomodoro, total menit fokus, dan kartu yang dikerjakan. Dashboard mengolah data ini menjadi statistik dan streak harian.\n\nDibangun sebagai proyek midterm divisi Mobile Development GDGoC Unsri. Saya membangun seluruh aplikasi, termasuk autentikasi, deck builder, timer, dan pelacakan sesi.",
       "techStack": [
         "Flutter",
         "Dart",
@@ -61,21 +61,21 @@
       "githubUrl": "https://github.com/Grimarks/Midterm-Mobile-Development-GDGoC-Unsri",
       "liveUrl": "",
       "features": [
-        "Email and password authentication with a persistent session",
-        "Deck builder: create, edit, and delete color-coded decks with up to three focus cards",
-        "Pomodoro timer (25/5/15) with tap to start or pause, phase skipping, and a circular progress indicator",
-        "Session tracking saved to Firestore",
-        "Dashboard with total sessions, total focus time, and a daily streak",
-        "Session history with status and timestamps",
-        "Dark theme with smooth animations and micro-interactions"
+        "Autentikasi email dan password dengan sesi login yang tersimpan",
+        "Deck builder: buat, edit, dan hapus deck berwarna dengan maksimal tiga kartu fokus",
+        "Timer Pomodoro (25/5/15) dengan tap untuk mulai atau jeda, lompat fase, dan indikator progres melingkar",
+        "Pelacakan sesi yang tersimpan ke Firestore",
+        "Dashboard berisi total sesi, total waktu fokus, dan streak harian",
+        "Riwayat sesi lengkap dengan status dan waktu",
+        "Tema gelap dengan animasi halus dan micro-interaction"
       ],
       "featured": false,
       "createdAt": "2026-06-20T15:44:20Z"
     },
     {
       "title": "NeoFund",
-      "description": "A peer-to-peer lending simulation platform with separate portals for customers and administrators.",
-      "longDescription": "NeoFund simulates an end-to-end digital lending workflow. New customers register and wait for manual admin verification before they can sign in. Once approved, they can apply for loans with a real-time installment calculator, track each application and its repayment timeline, and upload proof of payment for every installment.\n\nAdministrators work from a separate portal where they verify new customers, approve or reject loan applications, confirm payments, and review analytics and reports. Access is role-based, so customers and admins can only reach their own portal.\n\nI designed and built the entire application as a solo project.",
+      "description": "Platform simulasi peer-to-peer lending dengan portal terpisah untuk nasabah dan administrator.",
+      "longDescription": "NeoFund menyimulasikan alur pinjaman digital dari awal sampai akhir. Nasabah baru mendaftar lalu menunggu verifikasi manual dari admin sebelum bisa masuk. Setelah disetujui, nasabah dapat mengajukan pinjaman dengan kalkulator cicilan real-time, memantau setiap pengajuan beserta timeline angsurannya, dan mengunggah bukti pembayaran untuk setiap cicilan.\n\nAdministrator bekerja dari portal terpisah untuk memverifikasi nasabah baru, menyetujui atau menolak pengajuan pinjaman, mengonfirmasi pembayaran, serta melihat analitik dan laporan. Akses berbasis peran, sehingga nasabah dan admin hanya bisa membuka portal masing-masing.\n\nSaya merancang dan membangun seluruh aplikasi ini sebagai proyek solo.",
       "techStack": [
         "React",
         "TypeScript",
@@ -93,21 +93,21 @@
       "githubUrl": "https://github.com/Grimarks/SIBANK-NEOFUND",
       "liveUrl": "https://neofund.vercel.app",
       "features": [
-        "Role-based login with protected routes for customers and admins",
-        "Registration with a pending state until an admin verifies the account",
-        "Loan calculator with amount slider, tenor selection, and real-time installment estimate",
-        "Loan history with Pending / Approved / Rejected status and an installment timeline",
-        "Payment proof upload with admin verification",
-        "Customer dashboard with a projected debt-reduction chart",
-        "Admin tools for customer management, loan approval, payment verification, and reports"
+        "Login berbasis peran dengan route yang terproteksi untuk nasabah dan admin",
+        "Pendaftaran dengan status menunggu hingga akun diverifikasi admin",
+        "Kalkulator pinjaman dengan slider nominal, pilihan tenor, dan estimasi cicilan real-time",
+        "Riwayat pinjaman dengan status Pending / Approved / Rejected dan timeline angsuran",
+        "Upload bukti pembayaran dengan verifikasi admin",
+        "Dashboard nasabah dengan grafik proyeksi penurunan sisa hutang",
+        "Fitur admin untuk manajemen nasabah, persetujuan pinjaman, verifikasi pembayaran, dan laporan"
       ],
       "featured": true,
       "createdAt": "2026-05-08T08:03:21Z"
     },
     {
       "title": "GDGoC Manager",
-      "description": "An internal management dashboard for GDGoC Universitas Sriwijaya to organize members, projects, and the core team.",
-      "longDescription": "GDGoC Manager is an internal platform for Google Developer Groups on Campus (GDGoC) Universitas Sriwijaya. It gives the community one place to keep track of its members, ongoing projects, and core team structure, replacing scattered spreadsheets.\n\nThe dashboard shows member and activity statistics. Leads and co-leads can manage the member list with search and role filters, and projects are tracked by division with status, progress, and deadlines. Authentication and data storage are handled by Firebase, and the layout adapts to both desktop and mobile.\n\nI built the application as a solo project.",
+      "description": "Dashboard manajemen internal GDGoC Universitas Sriwijaya untuk mengelola anggota, proyek, dan tim inti.",
+      "longDescription": "GDGoC Manager adalah platform internal untuk Google Developer Groups on Campus (GDGoC) Universitas Sriwijaya. Aplikasi ini menjadi satu tempat bagi komunitas untuk mengelola anggota, proyek yang sedang berjalan, dan struktur tim inti, menggantikan spreadsheet yang tersebar.\n\nDashboard menampilkan statistik anggota dan aktivitas. Lead dan co-lead dapat mengelola daftar anggota dengan pencarian dan filter role, sementara proyek dipantau per divisi lengkap dengan status, progres, dan tenggat waktu. Autentikasi dan penyimpanan data ditangani Firebase, dan tampilannya menyesuaikan desktop maupun mobile.\n\nSaya membangun aplikasi ini sebagai proyek solo.",
       "techStack": [
         "React",
         "JavaScript",
@@ -123,20 +123,20 @@
       "githubUrl": "https://github.com/Grimarks/gdgoc_manager",
       "liveUrl": "https://gdgoc-manager.vercel.app",
       "features": [
-        "Dashboard with member statistics and recent activity",
-        "Member directory with search, role filter, and CRUD for leads and co-leads",
-        "Project tracking per division with status, progress bar, and deadlines",
-        "Core team organization view",
-        "Login and registration with Firebase Authentication",
-        "Responsive sidebar layout for desktop and mobile"
+        "Dashboard dengan statistik anggota dan aktivitas terbaru",
+        "Direktori anggota dengan pencarian, filter role, dan CRUD untuk lead dan co-lead",
+        "Pelacakan proyek per divisi dengan status, progress bar, dan tenggat waktu",
+        "Tampilan struktur organisasi tim inti",
+        "Login dan registrasi dengan Firebase Authentication",
+        "Layout sidebar responsif untuk desktop dan mobile"
       ],
       "featured": false,
       "createdAt": "2025-12-04T03:34:42Z"
     },
     {
       "title": "Event Ticketing REST API",
-      "description": "A RESTful API for an online event ticketing platform, built in Go with Fiber, GORM, and JWT authentication.",
-      "longDescription": "A backend service for booking tickets to online events, built as the final study case of a backend programming series. Users register and log in to receive a JWT, and role-based middleware separates admins, who create events, from regular users, who browse events and purchase tickets through transactions.\n\nThe service follows a layered structure (config, models, controllers, middleware, routes), persists data in MySQL through GORM, and documents its endpoints with a Swagger/OpenAPI specification.",
+      "description": "RESTful API untuk platform pemesanan tiket event online, dibangun dengan Go, Fiber, GORM, dan autentikasi JWT.",
+      "longDescription": "Layanan backend untuk memesan tiket event online, dibuat sebagai study case terakhir dari rangkaian latihan pemrograman backend. Pengguna mendaftar dan login untuk mendapatkan JWT, lalu middleware berbasis peran memisahkan admin, yang membuat event, dari pengguna biasa, yang melihat daftar event dan membeli tiket lewat transaksi.\n\nLayanan ini menggunakan struktur berlapis (config, models, controllers, middleware, routes), menyimpan data di MySQL melalui GORM, dan mendokumentasikan endpoint-nya dengan spesifikasi Swagger/OpenAPI.",
       "techStack": [
         "Go",
         "Fiber",
@@ -149,20 +149,20 @@
       "githubUrl": "https://github.com/Grimarks/BE_StudyCase_Darrell-Satriano",
       "liveUrl": "",
       "features": [
-        "User registration and login with JWT authentication",
-        "Role-based access control for admins and users",
-        "Event creation and listing endpoints",
-        "Ticket purchase transactions",
-        "MySQL persistence with GORM",
-        "Swagger/OpenAPI documentation"
+        "Registrasi dan login pengguna dengan autentikasi JWT",
+        "Kontrol akses berbasis peran untuk admin dan user",
+        "Endpoint pembuatan dan daftar event",
+        "Transaksi pembelian tiket",
+        "Penyimpanan data di MySQL dengan GORM",
+        "Dokumentasi Swagger/OpenAPI"
       ],
       "featured": false,
       "createdAt": "2025-12-26T11:00:25Z"
     },
     {
       "title": "EduTest+",
-      "description": "An online test simulation platform with premium classes, built with a Go (Fiber) backend and a React frontend.",
-      "longDescription": "EduTest+ is a web platform for practicing online tests and accessing premium classes. Students pick a test by category or difficulty, answer questions against a timer, and get their score right away along with detailed explanations. Premium access works through an order flow: the student places an order and uploads proof of payment, then an admin verifies it and the account is upgraded automatically with an expiry date.\n\nThe backend is a Go REST API built with Fiber and GORM on MySQL, using Redis for refresh-token sessions and JWT stored in httpOnly cookies. It is containerized with Docker Compose. The frontend is a React single-page app styled with Tailwind CSS and shadcn/ui.\n\nThis was a team project. I built the React frontend and co-developed the Go backend.",
+      "description": "Platform simulasi tes online dengan kelas premium, dibangun dengan backend Go (Fiber) dan frontend React.",
+      "longDescription": "EduTest+ adalah platform web untuk latihan tes online dan mengakses kelas premium. Siswa memilih tes berdasarkan kategori atau tingkat kesulitan, mengerjakan soal dengan timer, lalu langsung mendapatkan skor beserta pembahasan lengkap. Akses premium diperoleh lewat alur order: siswa membuat order dan mengunggah bukti pembayaran, lalu admin memverifikasinya dan akun otomatis ditingkatkan dengan masa berlaku tertentu.\n\nBackend-nya berupa REST API Go yang dibangun dengan Fiber dan GORM di atas MySQL, memakai Redis untuk sesi refresh token dan JWT yang disimpan di httpOnly cookie, serta dikontainerisasi dengan Docker Compose. Frontend-nya berupa single-page app React dengan Tailwind CSS dan shadcn/ui.\n\nIni adalah proyek tim. Saya membangun frontend React dan ikut mengembangkan backend Go.",
       "techStack": [
         "React",
         "JavaScript",
@@ -183,21 +183,21 @@
       "githubUrl": "https://github.com/Grimarks/Project_EduTest",
       "liveUrl": "",
       "features": [
-        "Registration and login with JWT in httpOnly cookies and Redis-backed refresh tokens",
-        "Student dashboard with average score, completed tests, and recommendations",
-        "Timed tests with question navigation and instant scoring",
-        "Result page with detailed answer explanations",
-        "Premium subscription orders with payment proof upload",
-        "Admin panel for verifying orders and managing tests and questions",
-        "Dockerized development environment"
+        "Registrasi dan login dengan JWT di httpOnly cookie dan refresh token berbasis Redis",
+        "Dashboard siswa berisi skor rata-rata, tes yang sudah selesai, dan rekomendasi",
+        "Tes dengan timer, navigasi soal, dan penilaian instan",
+        "Halaman hasil dengan pembahasan jawaban yang lengkap",
+        "Order langganan premium dengan upload bukti pembayaran",
+        "Panel admin untuk verifikasi order serta pengelolaan tes dan soal",
+        "Lingkungan pengembangan dengan Docker"
       ],
       "featured": false,
       "createdAt": "2025-09-01T13:38:28Z"
     },
     {
       "title": "MyBusiness",
-      "description": "A campus canteen ordering web app that helps small food businesses sell online, with separate experiences for customers and store owners.",
-      "longDescription": "MyBusiness is a prototype that digitalizes food ordering at campus canteens, making it easier for small business owners to sell and for students and staff to order.\n\nCustomers browse menus from multiple canteens, search and filter by campus location (Bukit / Indralaya), save favorites, add items to a cart, and check out for pickup or delivery. They can then follow each order's status in their history. Store owners get their own portal to manage menu items and stock availability, process incoming orders, track revenue, and edit their store profile.\n\nI built the application as a solo project with React and Firebase. Image uploads are routed to Google Drive through Google Apps Script.",
+      "description": "Aplikasi web pemesanan kantin kampus yang membantu UMKM kuliner berjualan online, dengan pengalaman terpisah untuk pelanggan dan pemilik usaha.",
+      "longDescription": "MyBusiness adalah prototipe yang mendigitalisasi pemesanan makanan di kantin kampus, sehingga pemilik usaha lebih mudah berjualan dan mahasiswa maupun staf lebih mudah memesan.\n\nPelanggan dapat menjelajahi menu dari berbagai kantin, mencari dan memfilter berdasarkan lokasi kampus (Bukit / Indralaya), menyimpan favorit, menambahkan item ke keranjang, dan checkout untuk diambil di tempat atau diantar, lalu memantau status setiap pesanan di riwayat. Pemilik usaha memiliki portal sendiri untuk mengelola menu dan ketersediaan stok, memproses pesanan masuk, memantau pendapatan, dan mengedit profil toko.\n\nSaya membangun aplikasi ini sebagai proyek solo dengan React dan Firebase. Upload gambar diteruskan ke Google Drive melalui Google Apps Script.",
       "techStack": [
         "React",
         "JavaScript",
@@ -213,22 +213,22 @@
       "githubUrl": "https://github.com/Grimarks/MyBusiness",
       "liveUrl": "https://mybusiness.satriano.me",
       "features": [
-        "Separate customer and store-owner roles with their own login",
-        "Menu browsing with search and campus location filter",
-        "Favorites and shopping cart",
-        "Checkout with pickup or delivery options",
-        "Order history with processing status",
-        "Menu management (add, edit, delete, stock and Ready / Sold out status)",
-        "Revenue dashboard and incoming order management for owners",
-        "Store and account profile editing"
+        "Peran pelanggan dan pemilik usaha dengan login masing-masing",
+        "Jelajah menu dengan pencarian dan filter lokasi kampus",
+        "Favorit dan keranjang belanja",
+        "Checkout dengan pilihan ambil di tempat atau diantar",
+        "Riwayat pesanan beserta statusnya",
+        "Manajemen menu (tambah, edit, hapus, stok, dan status Ready / Habis)",
+        "Dashboard pendapatan dan pengelolaan pesanan masuk untuk pemilik",
+        "Edit profil toko dan akun"
       ],
       "featured": true,
       "createdAt": "2025-07-27T03:04:12Z"
     },
     {
       "title": "MediaHeaven",
-      "description": "A movie discovery web app for browsing, searching, and saving films from TMDB, with a shared community feed.",
-      "longDescription": "MediaHeaven lets users explore popular, top-rated, and now-playing movies pulled live from the TMDB API, search the full catalog, and open any title to see its synopsis, rating, runtime, release date, and genres. Signed-in users can keep a personal watchlist and join a shared community feed to talk about what they are watching.\n\nThe React frontend is deployed on Vercel. Accounts, watchlists, and community posts go through Vercel Serverless Functions that use the Firebase Admin SDK with Firestore, and passwords are hashed with bcrypt.\n\nI built the application as a solo project.",
+      "description": "Aplikasi web penjelajah film untuk melihat, mencari, dan menyimpan film dari TMDB, dilengkapi feed komunitas.",
+      "longDescription": "MediaHeaven memungkinkan pengguna menjelajahi film populer, rating tertinggi, dan yang sedang tayang langsung dari TMDB API, mencari di seluruh katalog, serta membuka detail film berisi sinopsis, rating, durasi, tanggal rilis, dan genre. Pengguna yang login dapat menyimpan watchlist pribadi dan ikut berdiskusi di feed komunitas tentang film yang sedang mereka tonton.\n\nFrontend React di-deploy di Vercel. Akun, watchlist, dan postingan komunitas diproses oleh Vercel Serverless Functions yang memakai Firebase Admin SDK dan Firestore, dengan password yang di-hash menggunakan bcrypt.\n\nSaya membangun aplikasi ini sebagai proyek solo.",
       "techStack": [
         "React",
         "JavaScript",
@@ -245,20 +245,20 @@
       "githubUrl": "https://github.com/Grimarks/MediaHeavenReact",
       "liveUrl": "https://media-heaven-react.vercel.app/",
       "features": [
-        "Browse popular, top-rated, and now-playing movies",
-        "Full-text movie search",
-        "Movie detail view with synopsis, rating, runtime, and genres",
-        "Personal watchlist tied to the user's account",
-        "Community comment feed",
-        "Sign up and log in"
+        "Jelajah film populer, rating tertinggi, dan sedang tayang",
+        "Pencarian film full-text",
+        "Detail film berisi sinopsis, rating, durasi, dan genre",
+        "Watchlist pribadi yang terhubung ke akun pengguna",
+        "Feed komentar komunitas",
+        "Daftar dan login akun"
       ],
       "featured": false,
       "createdAt": "2025-07-08T14:04:52Z"
     },
     {
       "title": "KostQu",
-      "description": "A boarding house (kost) search website with listings, detail pages, and rental price calculation, backed by Node.js and MySQL.",
-      "longDescription": "KostQu is a website for finding boarding houses (kost). Visitors can search listings, open a detail page with photos and contact information, and see the rental price for their chosen duration before moving on to a payment page.\n\nThe frontend is built with plain HTML, CSS, and JavaScript. It talks to an Express server that queries a MySQL database for listings, details, and duration-based pricing.\n\nI built the project as a solo project.",
+      "description": "Website pencarian kost dengan daftar kost, halaman detail, dan perhitungan harga sewa, didukung Node.js dan MySQL.",
+      "longDescription": "KostQu adalah website untuk mencari kost. Pengunjung dapat mencari daftar kost, membuka halaman detail berisi foto dan informasi kontak, serta melihat harga sewa sesuai durasi yang dipilih sebelum lanjut ke halaman pembayaran.\n\nFrontend-nya dibangun dengan HTML, CSS, dan JavaScript murni, dan terhubung ke server Express yang mengambil data daftar kost, detail, dan harga berdasarkan durasi dari database MySQL.\n\nSaya membangun proyek ini sebagai proyek solo.",
       "techStack": [
         "HTML",
         "CSS",
@@ -271,19 +271,19 @@
       "githubUrl": "https://github.com/Grimarks/Project-KostQu",
       "liveUrl": "",
       "features": [
-        "Kost listing with search",
-        "Detail page with photos, address, and contact",
-        "Rental price calculation by duration",
-        "Payment page",
-        "REST endpoints served by Express with a MySQL database"
+        "Daftar kost dengan fitur pencarian",
+        "Halaman detail berisi foto, alamat, dan kontak",
+        "Perhitungan harga sewa berdasarkan durasi",
+        "Halaman pembayaran",
+        "Endpoint REST dari Express dengan database MySQL"
       ],
       "featured": false,
       "createdAt": "2024-08-16T13:49:07Z"
     },
     {
       "title": "Indonesian POS Tagging: BiLSTM vs IndoBERT",
-      "description": "Part-of-speech tagging for Indonesian that compares a BiLSTM baseline with a fine-tuned IndoBERT model, served through a Streamlit demo.",
-      "longDescription": "This project implements part-of-speech tagging for Indonesian using the UD Indonesian-GSD treebank and compares two approaches: a BiLSTM sequence-labeling model trained from scratch, and a fine-tuned IndoBERT (indobenchmark/indobert-base-p1) token-classification model.\n\nThe pipeline covers parsing the CoNLL-U data, building vocabularies, encoding, training both models in PyTorch, and evaluating them with precision, recall, and F1 via seqeval. On the evaluation subset, IndoBERT reached a weighted F1 of about 0.89 compared with about 0.74 for the BiLSTM, and it outperformed the BiLSTM on almost every POS category. A Streamlit app lets users tag their own sentences with the trained models.",
+      "description": "POS tagging bahasa Indonesia yang membandingkan baseline BiLSTM dengan model IndoBERT hasil fine-tuning, dilengkapi demo Streamlit.",
+      "longDescription": "Proyek ini mengimplementasikan part-of-speech tagging untuk bahasa Indonesia menggunakan treebank UD Indonesian-GSD dan membandingkan dua pendekatan: model sequence labeling BiLSTM yang dilatih dari awal, dan model token classification IndoBERT (indobenchmark/indobert-base-p1) hasil fine-tuning.\n\nPipeline-nya mencakup parsing data CoNLL-U, pembangunan vocabulary, encoding, pelatihan kedua model dengan PyTorch, dan evaluasi precision, recall, serta F1 menggunakan seqeval. Pada subset evaluasi, IndoBERT mencapai weighted F1 sekitar 0,89 dibandingkan sekitar 0,74 untuk BiLSTM, dan unggul di hampir semua kategori POS. Aplikasi Streamlit memungkinkan pengguna men-tag kalimat mereka sendiri dengan model yang sudah dilatih.",
       "techStack": [
         "Python",
         "PyTorch",
@@ -297,20 +297,20 @@
       "githubUrl": "https://github.com/Grimarks/NLP-POS",
       "liveUrl": "",
       "features": [
-        "CoNLL-U parsing and vocabulary building from UD Indonesian-GSD",
-        "BiLSTM POS tagger trained from scratch",
-        "Fine-tuned IndoBERT token-classification model",
-        "Evaluation with precision, recall, and F1 (seqeval)",
-        "Model comparison: IndoBERT weighted F1 ~0.89 vs BiLSTM ~0.74",
-        "Streamlit app for interactive tagging"
+        "Parsing CoNLL-U dan pembangunan vocabulary dari UD Indonesian-GSD",
+        "POS tagger BiLSTM yang dilatih dari awal",
+        "Model token classification IndoBERT hasil fine-tuning",
+        "Evaluasi precision, recall, dan F1 (seqeval)",
+        "Perbandingan model: weighted F1 IndoBERT ~0,89 vs BiLSTM ~0,74",
+        "Aplikasi Streamlit untuk tagging interaktif"
       ],
       "featured": false,
       "createdAt": "2026-03-05T14:55:07Z"
     },
     {
       "title": "Smartphone Addiction Classification with MLP",
-      "description": "Classifies smartphone addiction levels (Mild, Moderate, Severe) with a Multi-Layer Perceptron and compares four network configurations.",
-      "longDescription": "This project applies a Multi-Layer Perceptron to classify smartphone addiction levels into Mild, Moderate, or Severe, using a 7,500-row smartphone usage dataset with features such as screen time, social media and gaming hours, sleep, notifications, and stress level.\n\nThe workflow includes data cleaning, label encoding, standardization, and a stratified 80/20 split. Four architectures are compared, varying the number of hidden layers (1 or 2) and neurons per layer (16 or 32). The best configuration, two hidden layers with 16 neurons each, reached 54.75% test accuracy, and the results are analyzed with confusion matrices, accuracy comparisons, and loss curves.\n\nI built the data pipeline, model experiments, and analysis. A teammate added the Streamlit simulation.",
+      "description": "Klasifikasi tingkat kecanduan smartphone (Mild, Moderate, Severe) dengan Multi-Layer Perceptron dan perbandingan empat konfigurasi jaringan.",
+      "longDescription": "Proyek ini menerapkan Multi-Layer Perceptron untuk mengklasifikasikan tingkat kecanduan smartphone menjadi Mild, Moderate, atau Severe, menggunakan dataset penggunaan smartphone berisi 7.500 baris dengan fitur seperti screen time, jam media sosial dan gaming, jam tidur, jumlah notifikasi, dan tingkat stres.\n\nAlurnya meliputi pembersihan data, label encoding, standardisasi, dan pembagian data stratified 80/20. Empat arsitektur dibandingkan dengan memvariasikan jumlah hidden layer (1 atau 2) dan jumlah neuron per layer (16 atau 32). Konfigurasi terbaik, dua hidden layer dengan 16 neuron, mencapai akurasi test 54,75%, dan hasilnya dianalisis dengan confusion matrix, perbandingan akurasi, dan kurva loss.\n\nSaya membangun pipeline data, eksperimen model, dan analisisnya. Simulasi Streamlit ditambahkan oleh rekan tim.",
       "techStack": [
         "Python",
         "scikit-learn",
@@ -324,12 +324,12 @@
       "githubUrl": "https://github.com/Grimarks/Klasifikasi-TingkatKecanduan-MLP",
       "liveUrl": "",
       "features": [
-        "Data cleaning, label encoding, and standardization",
-        "Stratified train/test split",
-        "Comparison of four MLP architectures (1-2 hidden layers, 16-32 neurons)",
-        "Evaluation with a classification report, confusion matrix, and loss curves",
-        "Exploratory data analysis visualizations",
-        "Streamlit app for trying predictions"
+        "Pembersihan data, label encoding, dan standardisasi",
+        "Pembagian data train/test secara stratified",
+        "Perbandingan empat arsitektur MLP (1-2 hidden layer, 16-32 neuron)",
+        "Evaluasi dengan classification report, confusion matrix, dan kurva loss",
+        "Visualisasi exploratory data analysis",
+        "Aplikasi Streamlit untuk mencoba prediksi"
       ],
       "featured": false,
       "createdAt": "2026-05-05T03:15:15Z"
